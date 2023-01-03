@@ -14,6 +14,12 @@ use book_store;
  Address VARCHAR(100),
   primary key(customerId)
  );
+ 
+ CREATE TABLE shopping_cart(
+ customerID INTEGER,
+ bookISBN INTEGER,
+ bookQuantity INTEGER
+ );
 
 CREATE TABLE PUBLISHER(
   Name varchar(50),
