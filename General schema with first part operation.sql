@@ -35,7 +35,7 @@ CREATE TABLE AUTHORS(
   Publisher_name varchar(30),
   Publication_Year date,
   Selling_price float,
-  Category varchar(20) ,
+  Category varchar(100) ,
   in_stock int,
   threshold int,
   foreign key (Publisher_name) references PUBLISHER (Name) on update cascade on delete set null,
