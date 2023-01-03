@@ -10,15 +10,24 @@
  Fname VARCHAR(20), 
  Email VARCHAR(30),
  Phone CHAR(11),
- Address VARCHAR(100)
+ Address VARCHAR(100),
+  primary key(customerId)
  );
  
- CREATE TABLE shopping_cart(
- customerID INTEGER,
- bookISBN INTEGER,
- bookQuantity INTEGER
- );
+CREATE TABLE AUTHORS(
+  Book_id int,
+  Author_name varchar(50),
+  primary key (Author_name),
+  foreign key (Book_id) references BOOK(ISBN) on update cascade
+);
  
+ CREATE TABLE PUBLISHER(
+  Name varchar(50),
+  Address varchar(100),
+  Phone varchar(25),
+  PRIMARY KEY(Name)
+);
+
  CREATE TABLE BOOK (
   ISBN INTEGER PRIMARY KEY,
   Title varchar(30),
@@ -30,21 +39,19 @@
   foreign key (Publisher_name) references PUBLISHER (Name) on update cascade on delete set null
   );
 
-CREATE TABLE PUBLISHER(
-  Name varchar(50),
-  Address varchar(100),
-  Phone varchar(25),
-  PRIMARY KEY(Name)
-);
 
-CREATE TABLE AUTHORS(
-  Book_id int,
-  Author_name varchar(50),
-  primary key (Author_name),
-  foreign key (Book_id) references BOOK(ISBN) on update cascade
-);
-
-
+ CREATE TABLE shopping_cart(
+  cartID INTEGER,
+ customerID INTEGER,
+ bookISBN INTEGER,
+ bookQuantity INTEGER,
+  primary key(cartID),
+  foreign key(bookISBN) references BOOK(ISBN) on update cascade,
+  foreign key(customerID) references user_info(customerID) on update cascade
+ );
+ 
+ 
+/*
 CREATE TABLE BORROWER(
   Card_no int,
   Name varchar(50),
@@ -52,7 +59,9 @@ CREATE TABLE BORROWER(
   Phone char(9),
   PRIMARY KEY(Card_no)
 );
+*/
 
+/*
 CREATE TABLE BOOK_ORDER(
   Order_id INTEGER PRIMARY key,
   Book_id int,
@@ -60,3 +69,5 @@ CREATE TABLE BOOK_ORDER(
   foreign key (Book_id) references BOOK(ISBN) on update cascade,
   foreign key (Borrower_id) references BORROWER(Card_no) on update cascade
 );
+
+*/
