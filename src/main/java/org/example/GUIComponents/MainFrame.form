@@ -263,6 +263,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
+              <foreground color="-4515305"/>
               <text value=""/>
             </properties>
           </component>
@@ -368,6 +369,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
+              <foreground color="-4513762"/>
               <text value=""/>
             </properties>
           </component>

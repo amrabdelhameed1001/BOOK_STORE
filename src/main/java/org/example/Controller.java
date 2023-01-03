@@ -6,7 +6,7 @@ public class Controller {
         return true;
     }
 
-    public static boolean trySignup(String fname, String lname, String pass1, String pass2, String email, String address, String phone, String userType)
+    public static boolean trySignup(String fname, String lname, String pass, String username, String email, String address, String phone, String userType)
     {
         return true;
     }
