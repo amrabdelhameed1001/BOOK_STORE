@@ -1,11 +1,32 @@
   drop SCHEMA BOOK_STORE;
  CREATE SCHEMA BOOK_STORE;
 use book_store;
+
+
+ CREATE TABLE user_info(
+ customerID INTEGER,
+ userName VARCHAR(50),
+ Password VARCHAR(100),
+ Lname VARCHAR(30),
+ Fname VARCHAR(20), 
+ Email VARCHAR(30),
+ Phone CHAR(11),
+ Address VARCHAR(100),
+  primary key(customerId)
+ );
+
 CREATE TABLE PUBLISHER(
   Name varchar(50),
   Address varchar(100),
   Phone varchar(25),
   PRIMARY KEY(Name)
+);
+
+CREATE TABLE AUTHORS(
+  Book_id int,
+  Author_name varchar(50),
+  primary key (Author_name),
+  foreign key (Book_id) references BOOK(ISBN) on update cascade
 );
 
 
@@ -40,10 +61,14 @@ CREATE TABLE BOOK (
 
 CREATE TABLE BOOK_ORDER(
   Order_id INTEGER PRIMARY key,
-  Book_id int,
-  quantity int,
-  foreign key (Book_id) references BOOK(ISBN) on update cascade
+  customerID INTEGER,
+  bookISBN int,
+  bookQuantity int,
+  primary key(Order_id),
+  foreign key (bookISBN) references BOOK(ISBN) on update cascade
+  foreign key (customerID) referces user_info(customerID) on update cascade,
 --  foreign key (Borrower_id) references BORROWER(Card_no) on update cascade
+
 );
 
 -- operations
