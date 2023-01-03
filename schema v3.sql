@@ -26,7 +26,7 @@ CREATE TABLE AUTHORS(
   Book_id int,
   Author_name varchar(50),
   primary key (Author_name),
-  foreign key (Book_id) references BOOK(ISBN) on update cascade
+  -- foreign key (Book_id) references BOOK(ISBN) on update cascade
 );
 
 
