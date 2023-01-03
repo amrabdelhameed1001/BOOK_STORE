@@ -11,7 +11,7 @@ public class Controller {
         return true;
     }
 
-    public static boolean tryAddBook(String isbn, String title, String author, String publisher, String date, int price, String category, int minAmount)
+    public static boolean tryAddBook(String isbn, String title, String author, String publisher, String year, int price, String category, int minAmount)
     {
         return true;
     }
