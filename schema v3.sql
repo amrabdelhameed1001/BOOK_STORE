@@ -1,4 +1,4 @@
-  drop SCHEMA BOOK_STORE;
+ drop SCHEMA BOOK_STORE;
  CREATE SCHEMA BOOK_STORE;
 use book_store;
 
@@ -25,7 +25,7 @@ CREATE TABLE PUBLISHER(
 CREATE TABLE AUTHORS(
   Book_id int,
   Author_name varchar(50),
-  primary key (Author_name),
+  primary key (Author_name)
   -- foreign key (Book_id) references BOOK(ISBN) on update cascade
 );
 
@@ -65,8 +65,8 @@ CREATE TABLE BOOK_ORDER(
   Book_id int,
   quantity int,
   -- primary key(Order_id),
-  foreign key (Book_id) references BOOK(ISBN) on update cascade
-  foreign key (customerID) referces user_info(customerID) on update cascade,
+  foreign key (Book_id) references BOOK(ISBN) on update cascade,
+  foreign key (customerID) references user_info(customerID) on update cascade
 --  foreign key (Borrower_id) references BORROWER(Card_no) on update cascade
 
 );
