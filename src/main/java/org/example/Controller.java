@@ -24,4 +24,9 @@ public class Controller {
     {
         return true;
     }
+
+    public static boolean promoteUser(String username)
+    {
+        return true;
+    }
 }

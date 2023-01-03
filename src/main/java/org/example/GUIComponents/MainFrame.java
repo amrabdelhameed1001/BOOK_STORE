@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
+    String loggedUser;
     private JPanel rootPanel;
     private JPanel startScreen;
     private JButton toSignup;
@@ -35,20 +36,12 @@ public class MainFrame extends JFrame {
     private JPanel customerScreen;
     private JPanel managerScreen;
     private JTabbedPane tabbedPane1;
-    private JButton promoteUserButton;
-    private JButton addBookButton;
-    private JButton orderBookButton;
-    private JButton updateBookButton;
-    private JButton salesReportButton;
-    private JPanel mPersonalP;
+    private JButton goToPromoteUserButton;
+    private JButton goToAddBookButton;
+    private JButton goToOrderBookButton;
+    private JButton goToUpdateBookButton;
+    private JButton goToSalesReportButton;
     private JPanel manageActionsP;
-    private JPanel mSearchP;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JTextField textField4;
-    private JComboBox comboBox1;
-    private JButton searchButton;
     private JButton button1;
     private JLabel fnameLabel;
     private JLabel lnameLabel;
@@ -67,6 +60,18 @@ public class MainFrame extends JFrame {
     private JTextField addBookYearF;
     private JTextField addBookPriceF;
     private JLabel addBookErrorLabel;
+    private JPanel searchScreen;
+    private JButton backButton;
+    private JTextField searchISBNF;
+    private JTextField searchTitleF;
+    private JTextField searchAuthorF;
+    private JTextField searchPubF;
+    private JComboBox searchCatBox;
+    private JPanel promoteUserP;
+    private JTextField promoteNameField;
+    private JButton promoteBackButton;
+    private JButton promoteButton;
+    private JLabel promoteLabel;
 
     public MainFrame(String title) {
         super(title);
@@ -114,10 +119,34 @@ public class MainFrame extends JFrame {
                 signup();
             }
         });
-        addBookButton.addActionListener(new ActionListener() {
+        goToAddBookButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ((CardLayout) manageDeck.getLayout()).show(manageDeck, "AddBookScreen");
+            }
+        });
+        goToPromoteUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "PromoteUserScreen");
+            }
+        });
+        goToUpdateBookButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        goToSalesReportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        goToOrderBookButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
         addBookBackButton.addActionListener(new ActionListener() {
@@ -158,6 +187,27 @@ public class MainFrame extends JFrame {
 
             }
         });
+        promoteBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "ManageActionsScreen");
+                promoteLabel.setText("");
+            }
+        });
+        promoteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = promoteNameField.getText();
+                if (username.isEmpty()) {
+                    promoteLabel.setText("Fill user name");
+                    return;
+                }
+                boolean result = Controller.promoteUser(username);
+                if (result) promoteLabel.setText("Success!");
+                else promoteLabel.setText("Already promoted.");
+            }
+        });
+
     }
 
     void loginAs(String username, String password, String type) {
@@ -170,6 +220,7 @@ public class MainFrame extends JFrame {
             loginErrorLabel.setText("Invalid login Info");
             return;
         }
+        loggedUser = type;
         if (type.equals("Customer")) {
             ((CardLayout) rootPanel.getLayout()).show(rootPanel, "CustomerScreen");
         } else {
@@ -679,35 +730,35 @@ public class MainFrame extends JFrame {
         gbc.ipadx = 10;
         gbc.ipady = 20;
         panel4.add(label21, gbc);
-        final JTextField textField5 = new JTextField();
+        final JTextField textField1 = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel4.add(textField5, gbc);
-        final JTextField textField6 = new JTextField();
+        panel4.add(textField1, gbc);
+        final JTextField textField2 = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel4.add(textField6, gbc);
-        final JTextField textField7 = new JTextField();
+        panel4.add(textField2, gbc);
+        final JTextField textField3 = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel4.add(textField7, gbc);
-        final JTextField textField8 = new JTextField();
+        panel4.add(textField3, gbc);
+        final JTextField textField4 = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel4.add(textField8, gbc);
-        final JComboBox comboBox2 = new JComboBox();
+        panel4.add(textField4, gbc);
+        final JComboBox comboBox1 = new JComboBox();
         final DefaultComboBoxModel defaultComboBoxModel3 = new DefaultComboBoxModel();
         defaultComboBoxModel3.addElement("");
         defaultComboBoxModel3.addElement("Science");
@@ -715,13 +766,13 @@ public class MainFrame extends JFrame {
         defaultComboBoxModel3.addElement("Religion");
         defaultComboBoxModel3.addElement("History");
         defaultComboBoxModel3.addElement("Geography");
-        comboBox2.setModel(defaultComboBoxModel3);
+        comboBox1.setModel(defaultComboBoxModel3);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel4.add(comboBox2, gbc);
+        panel4.add(comboBox1, gbc);
         final JButton button2 = new JButton();
         button2.setText("Search");
         gbc = new GridBagConstraints();
@@ -750,34 +801,34 @@ public class MainFrame extends JFrame {
         manageActionsP = new JPanel();
         manageActionsP.setLayout(new GridBagLayout());
         manageDeck.add(manageActionsP, "ManageActionsScreen");
-        promoteUserButton = new JButton();
-        promoteUserButton.setText("Promote User");
+        goToPromoteUserButton = new JButton();
+        goToPromoteUserButton.setText("Promote User");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 6;
         gbc.weightx = 1.0;
-        manageActionsP.add(promoteUserButton, gbc);
-        addBookButton = new JButton();
-        addBookButton.setText("Add Book");
+        manageActionsP.add(goToPromoteUserButton, gbc);
+        goToAddBookButton = new JButton();
+        goToAddBookButton.setText("Add Book");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1.0;
-        manageActionsP.add(addBookButton, gbc);
-        orderBookButton = new JButton();
-        orderBookButton.setText("Order Book");
+        manageActionsP.add(goToAddBookButton, gbc);
+        goToOrderBookButton = new JButton();
+        goToOrderBookButton.setText("Order Book");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.weightx = 1.0;
-        manageActionsP.add(orderBookButton, gbc);
-        updateBookButton = new JButton();
-        updateBookButton.setText("Update Book");
+        manageActionsP.add(goToOrderBookButton, gbc);
+        goToUpdateBookButton = new JButton();
+        goToUpdateBookButton.setText("Update Book");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 1.0;
-        manageActionsP.add(updateBookButton, gbc);
+        manageActionsP.add(goToUpdateBookButton, gbc);
         final JPanel panel6 = new JPanel();
         panel6.setLayout(new CardLayout(0, 0));
         gbc = new GridBagConstraints();
@@ -802,12 +853,12 @@ public class MainFrame extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.ipady = 15;
         manageActionsP.add(panel8, gbc);
-        salesReportButton = new JButton();
-        salesReportButton.setText("Sales Report");
+        goToSalesReportButton = new JButton();
+        goToSalesReportButton.setText("Sales Report");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 8;
-        manageActionsP.add(salesReportButton, gbc);
+        manageActionsP.add(goToSalesReportButton, gbc);
         final JPanel panel9 = new JPanel();
         panel9.setLayout(new CardLayout(0, 0));
         gbc = new GridBagConstraints();
@@ -991,95 +1042,154 @@ public class MainFrame extends JFrame {
         gbc.gridy = 6;
         gbc.anchor = GridBagConstraints.WEST;
         addBookP.add(addBookErrorLabel, gbc);
-        mSearchP = new JPanel();
-        mSearchP.setLayout(new GridBagLayout());
-        tabbedPane1.addTab("Search", mSearchP);
+        promoteUserP = new JPanel();
+        promoteUserP.setLayout(new GridBagLayout());
+        manageDeck.add(promoteUserP, "PromoteUserScreen");
+        final JLabel label30 = new JLabel();
+        label30.setText("User name");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        promoteUserP.add(label30, gbc);
         final JPanel spacer13 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        mSearchP.add(spacer13, gbc);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        promoteUserP.add(spacer13, gbc);
         final JPanel spacer14 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        promoteUserP.add(spacer14, gbc);
+        promoteNameField = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        promoteUserP.add(promoteNameField, gbc);
+        promoteBackButton = new JButton();
+        promoteBackButton.setText("Back");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        promoteUserP.add(promoteBackButton, gbc);
+        promoteButton = new JButton();
+        promoteButton.setText("Promote");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        promoteUserP.add(promoteButton, gbc);
+        final JPanel panel11 = new JPanel();
+        panel11.setLayout(new CardLayout(0, 0));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.ipady = 50;
+        promoteUserP.add(panel11, gbc);
+        promoteLabel = new JLabel();
+        promoteLabel.setForeground(new Color(-4515049));
+        promoteLabel.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        promoteUserP.add(promoteLabel, gbc);
+        searchScreen = new JPanel();
+        searchScreen.setLayout(new GridBagLayout());
+        rootPanel.add(searchScreen, "SearchScreen");
+        final JPanel spacer15 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        mSearchP.add(spacer14, gbc);
-        final JLabel label30 = new JLabel();
-        label30.setText("ISBN");
+        searchScreen.add(spacer15, gbc);
+        final JPanel spacer16 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        searchScreen.add(spacer16, gbc);
+        final JLabel label31 = new JLabel();
+        label31.setText("ISBN");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        mSearchP.add(label30, gbc);
-        final JLabel label31 = new JLabel();
-        label31.setText("Title");
+        searchScreen.add(label31, gbc);
+        final JLabel label32 = new JLabel();
+        label32.setText("Title");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        mSearchP.add(label31, gbc);
-        final JLabel label32 = new JLabel();
-        label32.setText("Author");
+        searchScreen.add(label32, gbc);
+        final JLabel label33 = new JLabel();
+        label33.setText("Author");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        mSearchP.add(label32, gbc);
-        final JLabel label33 = new JLabel();
-        label33.setText("Publisher");
+        searchScreen.add(label33, gbc);
+        final JLabel label34 = new JLabel();
+        label34.setText("Publisher");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        mSearchP.add(label33, gbc);
-        final JLabel label34 = new JLabel();
-        label34.setText("Category");
+        searchScreen.add(label34, gbc);
+        final JLabel label35 = new JLabel();
+        label35.setText("Category");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        mSearchP.add(label34, gbc);
-        textField1 = new JTextField();
+        searchScreen.add(label35, gbc);
+        searchISBNF = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        mSearchP.add(textField1, gbc);
-        textField2 = new JTextField();
+        searchScreen.add(searchISBNF, gbc);
+        searchTitleF = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        mSearchP.add(textField2, gbc);
-        textField3 = new JTextField();
+        searchScreen.add(searchTitleF, gbc);
+        searchAuthorF = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        mSearchP.add(textField3, gbc);
-        textField4 = new JTextField();
+        searchScreen.add(searchAuthorF, gbc);
+        searchPubF = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        mSearchP.add(textField4, gbc);
-        comboBox1 = new JComboBox();
+        searchScreen.add(searchPubF, gbc);
+        searchCatBox = new JComboBox();
         final DefaultComboBoxModel defaultComboBoxModel5 = new DefaultComboBoxModel();
         defaultComboBoxModel5.addElement("");
         defaultComboBoxModel5.addElement("Science");
@@ -1087,32 +1197,35 @@ public class MainFrame extends JFrame {
         defaultComboBoxModel5.addElement("Religion");
         defaultComboBoxModel5.addElement("History");
         defaultComboBoxModel5.addElement("Geography");
-        comboBox1.setModel(defaultComboBoxModel5);
+        searchCatBox.setModel(defaultComboBoxModel5);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        mSearchP.add(comboBox1, gbc);
-        searchButton = new JButton();
-        searchButton.setText("Search");
+        searchScreen.add(searchCatBox, gbc);
+        final JButton button3 = new JButton();
+        button3.setText("Search");
         gbc = new GridBagConstraints();
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 6;
-        gbc.gridwidth = 4;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        mSearchP.add(searchButton, gbc);
-        final JPanel panel11 = new JPanel();
-        panel11.setLayout(new CardLayout(0, 0));
+        searchScreen.add(button3, gbc);
+        final JPanel panel12 = new JPanel();
+        panel12.setLayout(new CardLayout(0, 0));
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 5;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.ipady = 30;
-        mSearchP.add(panel11, gbc);
-        mPersonalP = new JPanel();
-        mPersonalP.setLayout(new CardLayout(0, 0));
-        tabbedPane1.addTab("Personal", mPersonalP);
+        searchScreen.add(panel12, gbc);
+        backButton = new JButton();
+        backButton.setText("Back");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        searchScreen.add(backButton, gbc);
     }
 
     /**
