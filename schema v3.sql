@@ -62,10 +62,10 @@ CREATE TABLE BOOK (
 CREATE TABLE BOOK_ORDER(
   Order_id INTEGER PRIMARY key,
   customerID INTEGER,
-  bookISBN int,
-  bookQuantity int,
+  Book_id int,
+  quantity int,
   primary key(Order_id),
-  foreign key (bookISBN) references BOOK(ISBN) on update cascade
+  foreign key (Book_id) references BOOK(ISBN) on update cascade
   foreign key (customerID) referces user_info(customerID) on update cascade,
 --  foreign key (Borrower_id) references BORROWER(Card_no) on update cascade
 
