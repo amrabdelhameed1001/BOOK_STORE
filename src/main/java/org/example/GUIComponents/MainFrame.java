@@ -1,14 +1,18 @@
 package org.example.GUIComponents;
 
+import org.example.Book;
 import org.example.Controller;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
     String loggedUser;
+    Book[] searchResults;
+    DefaultTableModel resultsDTM;
     private JPanel rootPanel;
     private JPanel startScreen;
     private JButton toSignup;
@@ -61,7 +65,7 @@ public class MainFrame extends JFrame {
     private JTextField addBookPriceF;
     private JLabel addBookErrorLabel;
     private JPanel searchScreen;
-    private JButton backButton;
+    private JButton searchBackButton;
     private JTextField searchISBNF;
     private JTextField searchTitleF;
     private JTextField searchAuthorF;
@@ -72,6 +76,12 @@ public class MainFrame extends JFrame {
     private JButton promoteBackButton;
     private JButton promoteButton;
     private JLabel promoteLabel;
+    private JPanel searchDeck;
+    private JPanel resultScreen;
+    private JButton searchButton;
+    private JButton resultSearchButton;
+    private JTable searchResultsTable;
+    private JLabel searchErrorLabel;
 
     public MainFrame(String title) {
         super(title);
@@ -159,9 +169,9 @@ public class MainFrame extends JFrame {
         addBookConfirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String isbn, title, author, pub, year, cat;
-                int price, min;
-                isbn = addBookISBNF.getText();
+                String title, author, pub, year, cat;
+                int isbn, price, min;
+
                 title = addBookTitleF.getText();
                 author = addBookAuthorF.getText();
                 pub = addBookPubF.getText();
@@ -169,11 +179,13 @@ public class MainFrame extends JFrame {
                 cat = (String) addBookCatBox.getSelectedItem();
                 String tempPrice = addBookPriceF.getText();
                 String tempMin = addBookMinF.getText();
-                if (isbn.isEmpty() || title.isEmpty() || author.isEmpty() || pub.isEmpty()
+                String tempisbn = addBookISBNF.getText();
+                if (tempisbn.isEmpty() || title.isEmpty() || author.isEmpty() || pub.isEmpty()
                         || year.isEmpty() || cat.isEmpty() || tempPrice.isEmpty() || tempMin.isEmpty()) {
                     addBookErrorLabel.setText("Fill all fields");
                     return;
                 }
+                isbn = Integer.parseInt(tempisbn);
                 price = Integer.parseInt(tempPrice);
                 min = Integer.parseInt(tempMin);
                 boolean result = Controller.tryAddBook(isbn, title, author, pub, year, price, cat, min);
@@ -208,6 +220,55 @@ public class MainFrame extends JFrame {
             }
         });
 
+        resultSearchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                ((CardLayout) searchDeck.getLayout()).show(searchDeck, "SearchScreen");
+            }
+        });
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                String tempisbn, pub, author, title, cat;
+                Integer isbn;
+
+                tempisbn = searchISBNF.getText();
+                title = searchTitleF.getText();
+                author = searchAuthorF.getText();
+                pub = searchPubF.getText();
+                cat = (String) searchCatBox.getSelectedItem();
+                if (tempisbn.isEmpty() && title.isEmpty() && author.isEmpty() && pub.isEmpty() && cat.isEmpty())
+                {
+                    searchErrorLabel.setText("Please fill at least one of the fields");
+                    return;
+                }
+                isbn = tempisbn.isEmpty() ? null : Integer.parseInt(tempisbn);
+                title = title.isEmpty() ? null : title;
+                author = author.isEmpty() ? null : author;
+                pub = pub.isEmpty() ? null : pub;
+                cat = cat.isEmpty() ? null : cat;
+                searchResults = Controller.search(isbn, title, author, pub, cat);
+                ((CardLayout) searchDeck.getLayout()).show(searchDeck, "ResultScreen");
+                resultsDTM.setRowCount(0);
+                if (searchResults != null)
+                {
+                    for (int i = 0; i < searchResults.length; i++)
+                    {
+                        Object[] row = new Object[7];
+                        row[0] = searchResults[i].isbn;
+                        row[1] = searchResults[i].title;
+                        row[2] = searchResults[i].author;
+                        row[3] = searchResults[i].publisher;
+                        row[4] = searchResults[i].year;
+                        row[6] = searchResults[i].cat;
+                        row[5] = searchResults[i].price;
+                    }
+                }
+                searchErrorLabel.setText("");
+            }
+        });
     }
 
     void loginAs(String username, String password, String type) {
@@ -233,12 +294,11 @@ public class MainFrame extends JFrame {
         fname = fnameF.getText();
         lname = lnameF.getText();
         username = usernameF.getText();
-        pass = passwordField1.getText();
+        pass = String.valueOf(passwordField1.getPassword());
         email = emailF.getText();
         address = addressF.getText();
         phone = phoneF.getText();
         userType = (String) signupUserTypeBox.getSelectedItem();
-        char[] c;
         String p1 = String.valueOf(passwordField1.getPassword());
         String p2 = String.valueOf(passwordField2.getPassword());
         if (!p1.equals(p2)) {
@@ -261,9 +321,16 @@ public class MainFrame extends JFrame {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+        //Create Root Panel
         rootPanel = new JPanel();
         add(rootPanel);
 
+        //Create results Table
+        String[] headers = {"ISBN", "Title", "Author", "Publisher", "Publication Year", "Category", "Price"};
+        resultsDTM = new DefaultTableModel(0, 0);
+        resultsDTM.setColumnIdentifiers(headers);
+        searchResultsTable = new JTable();
+        searchResultsTable.setModel(resultsDTM);
     }
 
     /**
@@ -1101,9 +1168,12 @@ public class MainFrame extends JFrame {
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         promoteUserP.add(promoteLabel, gbc);
+        searchDeck = new JPanel();
+        searchDeck.setLayout(new CardLayout(0, 0));
+        tabbedPane1.addTab("Search", searchDeck);
         searchScreen = new JPanel();
         searchScreen.setLayout(new GridBagLayout());
-        rootPanel.add(searchScreen, "SearchScreen");
+        searchDeck.add(searchScreen, "SearchScreen");
         final JPanel spacer15 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
@@ -1204,13 +1274,14 @@ public class MainFrame extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         searchScreen.add(searchCatBox, gbc);
-        final JButton button3 = new JButton();
-        button3.setText("Search");
+        searchButton = new JButton();
+        searchButton.setText("Search");
         gbc = new GridBagConstraints();
-        gbc.gridx = 1;
+        gbc.gridx = 0;
         gbc.gridy = 6;
+        gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        searchScreen.add(button3, gbc);
+        searchScreen.add(searchButton, gbc);
         final JPanel panel12 = new JPanel();
         panel12.setLayout(new CardLayout(0, 0));
         gbc = new GridBagConstraints();
@@ -1219,13 +1290,22 @@ public class MainFrame extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.ipady = 30;
         searchScreen.add(panel12, gbc);
-        backButton = new JButton();
-        backButton.setText("Back");
+        searchErrorLabel = new JLabel();
+        searchErrorLabel.setForeground(new Color(-4511196));
+        searchErrorLabel.setText("");
         gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 6;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        searchScreen.add(backButton, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 7;
+        searchScreen.add(searchErrorLabel, gbc);
+        resultScreen = new JPanel();
+        resultScreen.setLayout(new BorderLayout(0, 0));
+        searchDeck.add(resultScreen, "ResultScreen");
+        resultSearchButton = new JButton();
+        resultSearchButton.setText("Another Search");
+        resultScreen.add(resultSearchButton, BorderLayout.SOUTH);
+        final JScrollPane scrollPane1 = new JScrollPane();
+        resultScreen.add(scrollPane1, BorderLayout.CENTER);
+        scrollPane1.setViewportView(searchResultsTable);
     }
 
     /**
