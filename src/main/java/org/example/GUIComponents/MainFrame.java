@@ -1,5 +1,7 @@
 package org.example.GUIComponents;
 
+import org.example.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -83,17 +85,21 @@ public class MainFrame extends JFrame {
         });
         loginButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if (loginBox.getSelectedItem().equals("Customer"))
-                {
-                    loginAs(usernameF.getText(), loginPassF.getText(), (String)loginBox.getSelectedItem());
-                }
+            public void actionPerformed(ActionEvent e)
+            {
+                loginAs(usernameF.getText(), loginPassF.getText(), (String)loginBox.getSelectedItem());
             }
         });
     }
 
     void loginAs(String username, String password, String type)
     {
+        boolean result = Controller.tryLogin(username, password, type);
+        if (!result)
+        {
+            loginErrorLabel.setText("Invalid login Info");
+            return;
+        }
         if (type.equals("Customer"))
         {
             ((CardLayout) rootPanel.getLayout()).show(rootPanel, "CustomerScreen");
