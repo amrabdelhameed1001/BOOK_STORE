@@ -9,11 +9,19 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainFrame extends JFrame {
     String loggedUser;
     Book[] searchResults;
     DefaultTableModel managerResultsDTM;
+    int manageSearchTableWidth = 9;
+
+    DefaultTableModel managerCartDTM;
+    int cartTableWidth = 7;
+
+
     private JPanel rootPanel;
     private JPanel startScreen;
     private JButton toSignup;
@@ -96,6 +104,14 @@ public class MainFrame extends JFrame {
     private JButton placeOrderBackButton;
     private JButton placeOrderButton;
     private JLabel placeOrderErrorLabel;
+    private JPanel updateBookP;
+    private JTextField updateBookISBNF;
+    private JTextField updateBookSoldF;
+    private JButton updateBookBackButton;
+    private JButton confirmButton;
+    private JPanel managerCart;
+    private JButton managerBuyButton;
+    private JTable managerCartTable;
 
     public MainFrame(String title) {
         super(title);
@@ -231,7 +247,7 @@ public class MainFrame extends JFrame {
                 inStock = Integer.parseInt(tempStock);
                 boolean result = Controller.tryAddBook(isbn, title, author, pub, year, price, cat, min, inStock);
 
-                if (!result) {
+                if (result) {
                     addBookErrorLabel.setText("Book already exists");
                     return;
                 }
@@ -292,7 +308,7 @@ public class MainFrame extends JFrame {
                 managerResultsDTM.setRowCount(0);
                 if (searchResults != null) {
                     for (int i = 0; i < searchResults.length; i++) {
-                        Object[] row = new Object[9];
+                        Object[] row = new Object[manageSearchTableWidth];
                         row[0] = searchResults[i].isbn;
                         row[1] = searchResults[i].title;
                         row[2] = searchResults[i].author;
@@ -305,6 +321,10 @@ public class MainFrame extends JFrame {
                         managerResultsDTM.addRow(row);
                     }
                 }
+                //Delete this when done testing
+                Object[] testRow = {"test", "test", "test", "test", "test", "test", "test", "add", "modify"};
+                managerResultsDTM.addRow(testRow);
+
                 searchErrorLabel.setText("");
             }
         });
@@ -347,6 +367,46 @@ public class MainFrame extends JFrame {
                 }
             }
         });
+        goToOrderBookButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "PlaceOrderScreen");
+            }
+        });
+        searchResultsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int selectedCol = searchResultsTable.getSelectedColumn();
+                if (selectedCol == 8) {
+                    goToUpdateBook(0);
+                } else if (selectedCol == 7) {
+
+                }
+            }
+        });
+        goToUpdateBookButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                goToUpdateBook();
+            }
+        });
+        updateBookBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "ManageActionsScreen");
+            }
+        });
+    }
+
+    void goToUpdateBook() {
+        tabbedPane1.setSelectedComponent(manageDeck);
+        ((CardLayout) manageDeck.getLayout()).show(manageDeck, "UpdateBookScreen");
+    }
+
+    void goToUpdateBook(int isbn) {
+        updateBookISBNF.setText(String.valueOf(isbn));
+        goToUpdateBook();
     }
 
     void loginAs(String username, String password, String type) {
@@ -410,11 +470,26 @@ public class MainFrame extends JFrame {
         add(rootPanel);
 
         //Create Manager results Table
-        String[] headers = {"ISBN", "Title", "Author", "Publisher", "Publication Year", "Category", "Price", "Buy", "Update"};
+        String[] manageResultHeaders = {"ISBN", "Title", "Author", "Publisher", "Publication Year", "Category", "Price", "Buy", "Update"};
         managerResultsDTM = new DefaultTableModel(0, 0);
-        managerResultsDTM.setColumnIdentifiers(headers);
-        searchResultsTable = new JTable();
+        managerResultsDTM.setColumnIdentifiers(manageResultHeaders);
+        searchResultsTable = new JTable() {
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
+        };
         searchResultsTable.setModel(managerResultsDTM);
+
+        //Creating Manager cart table
+        String[] manageCartHeaders = {"Title", "Author", "Publisher", "Category", "Price", "Quantity", "Remove"};
+        managerCartDTM = new DefaultTableModel(0, 0);
+        managerCartDTM.setColumnIdentifiers(manageCartHeaders);
+        managerCartTable = new JTable() {
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
+        };
+        managerCartTable.setModel(managerCartDTM);
     }
 
     /**
@@ -1358,69 +1433,134 @@ public class MainFrame extends JFrame {
         ordersP.add(scrollPane1, BorderLayout.CENTER);
         ordersTable = new JTable();
         scrollPane1.setViewportView(ordersTable);
+        updateBookP = new JPanel();
+        updateBookP.setLayout(new GridBagLayout());
+        manageDeck.add(updateBookP, "UpdateBookScreen");
+        final JLabel label34 = new JLabel();
+        label34.setText("Book ISBN");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        updateBookP.add(label34, gbc);
+        final JPanel spacer17 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        updateBookP.add(spacer17, gbc);
+        final JPanel spacer18 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        updateBookP.add(spacer18, gbc);
+        updateBookISBNF = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        updateBookP.add(updateBookISBNF, gbc);
+        final JLabel label35 = new JLabel();
+        label35.setText("Sold copies");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        updateBookP.add(label35, gbc);
+        updateBookSoldF = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        updateBookP.add(updateBookSoldF, gbc);
+        final JPanel panel14 = new JPanel();
+        panel14.setLayout(new CardLayout(0, 0));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.ipady = 50;
+        updateBookP.add(panel14, gbc);
+        updateBookBackButton = new JButton();
+        updateBookBackButton.setText("Back");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        updateBookP.add(updateBookBackButton, gbc);
+        confirmButton = new JButton();
+        confirmButton.setText("Confirm");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        updateBookP.add(confirmButton, gbc);
         manageSearchDeck = new JPanel();
         manageSearchDeck.setLayout(new CardLayout(0, 0));
         tabbedPane1.addTab("Search", manageSearchDeck);
         searchScreen = new JPanel();
         searchScreen.setLayout(new GridBagLayout());
         manageSearchDeck.add(searchScreen, "SearchScreen");
-        final JPanel spacer17 = new JPanel();
+        final JPanel spacer19 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        searchScreen.add(spacer17, gbc);
-        final JPanel spacer18 = new JPanel();
+        searchScreen.add(spacer19, gbc);
+        final JPanel spacer20 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.VERTICAL;
-        searchScreen.add(spacer18, gbc);
-        final JLabel label34 = new JLabel();
-        label34.setText("ISBN");
+        searchScreen.add(spacer20, gbc);
+        final JLabel label36 = new JLabel();
+        label36.setText("ISBN");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        searchScreen.add(label34, gbc);
-        final JLabel label35 = new JLabel();
-        label35.setText("Title");
+        searchScreen.add(label36, gbc);
+        final JLabel label37 = new JLabel();
+        label37.setText("Title");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        searchScreen.add(label35, gbc);
-        final JLabel label36 = new JLabel();
-        label36.setText("Author");
+        searchScreen.add(label37, gbc);
+        final JLabel label38 = new JLabel();
+        label38.setText("Author");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        searchScreen.add(label36, gbc);
-        final JLabel label37 = new JLabel();
-        label37.setText("Publisher");
+        searchScreen.add(label38, gbc);
+        final JLabel label39 = new JLabel();
+        label39.setText("Publisher");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        searchScreen.add(label37, gbc);
-        final JLabel label38 = new JLabel();
-        label38.setText("Category");
+        searchScreen.add(label39, gbc);
+        final JLabel label40 = new JLabel();
+        label40.setText("Category");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        searchScreen.add(label38, gbc);
+        searchScreen.add(label40, gbc);
         searchISBNF = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -1472,14 +1612,14 @@ public class MainFrame extends JFrame {
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         searchScreen.add(searchButton, gbc);
-        final JPanel panel14 = new JPanel();
-        panel14.setLayout(new CardLayout(0, 0));
+        final JPanel panel15 = new JPanel();
+        panel15.setLayout(new CardLayout(0, 0));
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 5;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.ipady = 30;
-        searchScreen.add(panel14, gbc);
+        searchScreen.add(panel15, gbc);
         searchErrorLabel = new JLabel();
         searchErrorLabel.setForeground(new Color(-4511196));
         searchErrorLabel.setText("");
@@ -1506,6 +1646,21 @@ public class MainFrame extends JFrame {
         managerLogOutButton.setHorizontalTextPosition(0);
         managerLogOutButton.setText("Log out");
         manageLogoutP.add(managerLogOutButton);
+        managerCart = new JPanel();
+        managerCart.setLayout(new BorderLayout(0, 0));
+        tabbedPane1.addTab("Cart", managerCart);
+        final JPanel panel16 = new JPanel();
+        panel16.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        managerCart.add(panel16, BorderLayout.SOUTH);
+        final JLabel label41 = new JLabel();
+        label41.setText("Total = ");
+        panel16.add(label41);
+        managerBuyButton = new JButton();
+        managerBuyButton.setText("Buy");
+        panel16.add(managerBuyButton);
+        final JScrollPane scrollPane3 = new JScrollPane();
+        managerCart.add(scrollPane3, BorderLayout.CENTER);
+        scrollPane3.setViewportView(managerCartTable);
     }
 
     /**

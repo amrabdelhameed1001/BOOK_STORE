@@ -497,7 +497,8 @@ public class Controller {
     }
 
     public static boolean tryAddBook(int ISBN, String title, String author, String publisher_name, String publication_year,
-                                     float selling_price, String category , int threshold, int in_stock){
+                                     float selling_price, String category , int threshold, int in_stock)
+    {
         System.out.println("d5l");
         boolean flag = false;
         final String QUERY1 = "Select count(*) from publisher where name = \""+publisher_name+"\";";
@@ -558,7 +559,7 @@ public class Controller {
 
     public static boolean promoteUser(String username)
     {
-        final String QUERY3 = "update user_info set type = \"manager\" where username=\""+username+"\";";
+        final String QUERY3 = "update user_info set type = \"Manager\" where username=\""+username+"\";";
         System.out.println(QUERY3);
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
              Statement stmt = conn.createStatement();
