@@ -332,9 +332,38 @@ public class MainFrame extends JFrame {
         }
     }
 
+
     void logout() {
         ((CardLayout) rootPanel.getLayout()).show(rootPanel, "LoginScreen");
         loggedUser = null;
+    }
+    void signup() {
+        String fname, lname, username, pass, email, address, phone, userType;
+        fname = fnameF.getText();
+        lname = lnameF.getText();
+        username = usernameF.getText();
+        pass = String.valueOf(passwordField1.getPassword());
+        email = emailF.getText();
+        address = addressF.getText();
+        phone = phoneF.getText();
+        userType = (String) signupUserTypeBox.getSelectedItem();
+        String p1 = String.valueOf(passwordField1.getPassword());
+        String p2 = String.valueOf(passwordField2.getPassword());
+        if (!p1.equals(p2)) {
+            signupErrorLabel.setText("The two passwords aren't the same");
+            return;
+        }
+        if (fname.isEmpty() || lname.isEmpty() || username.isEmpty() ||
+                pass.isEmpty() || email.isEmpty() || address.isEmpty() || phone.isEmpty()) {
+            signupErrorLabel.setText("Please fill all the fields");
+            return;
+        }
+        boolean result = Controller.trySignup(username, pass, lname, fname, email, phone, address, userType);
+        if (!result) {
+            signupErrorLabel.setText("Invalid signup due to DB conflict");
+            return;
+        }
+        loginAs(username, pass, userType);
     }
 
 
