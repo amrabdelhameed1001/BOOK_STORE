@@ -20,7 +20,10 @@ public class Controller {
     {//Should return an array of Book objects that meet the search criterea.
         //Any of the arguments can be null meaning they aren't part of the search.
         //At least one of the arguments will not be null.
-        return null;
+        Book[] test = new Book[2];
+        test[0] = new Book(12, "4423", "trf", "jkhui", "2056", "rttgfd", 30);
+        test[1] = new Book(984, "165", "651", "89", "2361", "yuih", 10);
+        return test;
     }
 
 
