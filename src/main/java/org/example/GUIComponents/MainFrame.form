@@ -636,6 +636,22 @@
                   </grid>
                 </children>
               </grid>
+              <grid id="aace1" binding="customerLogoutP" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints>
+                  <tabbedpane title="Log out"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="d17bc" class="javax.swing.JButton" binding="customerLogoutButton">
+                    <constraints/>
+                    <properties>
+                      <horizontalTextPosition value="0"/>
+                      <text value="Log out"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
             </children>
           </tabbedpane>
         </children>
@@ -1062,7 +1078,7 @@
                   </grid>
                 </children>
               </grid>
-              <grid id="67ba7" binding="searchDeck" layout-manager="CardLayout" hgap="0" vgap="0">
+              <grid id="67ba7" binding="manageSearchDeck" layout-manager="CardLayout" hgap="0" vgap="0">
                 <constraints>
                   <tabbedpane title="Search"/>
                 </constraints>
@@ -1245,6 +1261,22 @@
                       </scrollpane>
                     </children>
                   </grid>
+                </children>
+              </grid>
+              <grid id="ee1f5" binding="manageLogoutP" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints>
+                  <tabbedpane title="Log out"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="7a91f" class="javax.swing.JButton" binding="managerLogOutButton">
+                    <constraints/>
+                    <properties>
+                      <horizontalTextPosition value="0"/>
+                      <text value="Log out"/>
+                    </properties>
+                  </component>
                 </children>
               </grid>
             </children>

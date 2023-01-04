@@ -77,13 +77,17 @@ public class MainFrame extends JFrame {
     private JButton promoteBackButton;
     private JButton promoteButton;
     private JLabel promoteLabel;
-    private JPanel searchDeck;
+    private JPanel manageSearchDeck;
     private JPanel resultScreen;
     private JButton searchButton;
     private JButton resultSearchButton;
     private JTable searchResultsTable;
     private JLabel searchErrorLabel;
     private JTextField addBookinStockF;
+    private JPanel manageLogoutP;
+    private JButton managerLogOutButton;
+    private JPanel customerLogoutP;
+    private JButton customerLogoutButton;
 
     public MainFrame(String title) {
         super(title);
@@ -128,7 +132,32 @@ public class MainFrame extends JFrame {
         signupButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                signup();
+                String fname, lname, username, pass, email, address, phone, userType;
+                fname = fnameF.getText();
+                lname = lnameF.getText();
+                username = usernameF.getText();
+                pass = String.valueOf(passwordField1.getPassword());
+                email = emailF.getText();
+                address = addressF.getText();
+                phone = phoneF.getText();
+                userType = (String) signupUserTypeBox.getSelectedItem();
+                String p1 = String.valueOf(passwordField1.getPassword());
+                String p2 = String.valueOf(passwordField2.getPassword());
+                if (!p1.equals(p2)) {
+                    signupErrorLabel.setText("The two passwords aren't the same");
+                    return;
+                }
+                if (fname.isEmpty() || lname.isEmpty() || username.isEmpty() ||
+                        pass.isEmpty() || email.isEmpty() || address.isEmpty() || phone.isEmpty()) {
+                    signupErrorLabel.setText("Please fill all the fields");
+                    return;
+                }
+                boolean result = Controller.trySignup(fname, lname, pass, username, email, address, phone, userType);
+                if (!result) {
+                    signupErrorLabel.setText("Invalid signup due to DB conflict");
+                    return;
+                }
+                loginAs(username, pass, userType);
             }
         });
         goToAddBookButton.addActionListener(new ActionListener() {
@@ -227,7 +256,7 @@ public class MainFrame extends JFrame {
         resultSearchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ((CardLayout) searchDeck.getLayout()).show(searchDeck, "SearchScreen");
+                ((CardLayout) manageSearchDeck.getLayout()).show(manageSearchDeck, "SearchScreen");
             }
         });
         searchButton.addActionListener(new ActionListener() {
@@ -251,7 +280,7 @@ public class MainFrame extends JFrame {
                 pub = pub.isEmpty() ? null : pub;
                 cat = cat.isEmpty() ? null : cat;
                 searchResults = Controller.search(isbn, title, author, pub, cat);
-                ((CardLayout) searchDeck.getLayout()).show(searchDeck, "ResultScreen");
+                ((CardLayout) manageSearchDeck.getLayout()).show(manageSearchDeck, "ResultScreen");
                 managerResultsDTM.setRowCount(0);
                 if (searchResults != null) {
                     for (int i = 0; i < searchResults.length; i++) {
@@ -269,6 +298,18 @@ public class MainFrame extends JFrame {
                     }
                 }
                 searchErrorLabel.setText("");
+            }
+        });
+        managerLogOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                logout();
+            }
+        });
+        customerLogoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                logout();
             }
         });
     }
@@ -291,33 +332,9 @@ public class MainFrame extends JFrame {
         }
     }
 
-    void signup() {
-        String fname, lname, username, pass, email, address, phone, userType;
-        fname = fnameF.getText();
-        lname = lnameF.getText();
-        username = usernameF.getText();
-        pass = String.valueOf(passwordField1.getPassword());
-        email = emailF.getText();
-        address = addressF.getText();
-        phone = phoneF.getText();
-        userType = (String) signupUserTypeBox.getSelectedItem();
-        String p1 = String.valueOf(passwordField1.getPassword());
-        String p2 = String.valueOf(passwordField2.getPassword());
-        if (!p1.equals(p2)) {
-            signupErrorLabel.setText("The two passwords aren't the same");
-            return;
-        }
-        if (fname.isEmpty() || lname.isEmpty() || username.isEmpty() ||
-                pass.isEmpty() || email.isEmpty() || address.isEmpty() || phone.isEmpty()) {
-            signupErrorLabel.setText("Please fill all the fields");
-            return;
-        }
-        boolean result = Controller.trySignup(fname, lname, pass, username, email, address, phone, userType);
-        if (!result) {
-            signupErrorLabel.setText("Invalid signup due to DB conflict");
-            return;
-        }
-        loginAs(username, pass, userType);
+    void logout() {
+        ((CardLayout) rootPanel.getLayout()).show(rootPanel, "LoginScreen");
+        loggedUser = null;
     }
 
 
@@ -858,6 +875,13 @@ public class MainFrame extends JFrame {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.ipady = 30;
         panel4.add(panel5, gbc);
+        customerLogoutP = new JPanel();
+        customerLogoutP.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        tabbedPane2.addTab("Log out", customerLogoutP);
+        customerLogoutButton = new JButton();
+        customerLogoutButton.setHorizontalTextPosition(0);
+        customerLogoutButton.setText("Log out");
+        customerLogoutP.add(customerLogoutButton);
         managerScreen = new JPanel();
         managerScreen.setLayout(new BorderLayout(0, 0));
         rootPanel.add(managerScreen, "ManagerScreen");
@@ -1186,12 +1210,12 @@ public class MainFrame extends JFrame {
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         promoteUserP.add(promoteLabel, gbc);
-        searchDeck = new JPanel();
-        searchDeck.setLayout(new CardLayout(0, 0));
-        tabbedPane1.addTab("Search", searchDeck);
+        manageSearchDeck = new JPanel();
+        manageSearchDeck.setLayout(new CardLayout(0, 0));
+        tabbedPane1.addTab("Search", manageSearchDeck);
         searchScreen = new JPanel();
         searchScreen.setLayout(new GridBagLayout());
-        searchDeck.add(searchScreen, "SearchScreen");
+        manageSearchDeck.add(searchScreen, "SearchScreen");
         final JPanel spacer15 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
@@ -1317,7 +1341,7 @@ public class MainFrame extends JFrame {
         searchScreen.add(searchErrorLabel, gbc);
         resultScreen = new JPanel();
         resultScreen.setLayout(new BorderLayout(0, 0));
-        searchDeck.add(resultScreen, "ResultScreen");
+        manageSearchDeck.add(resultScreen, "ResultScreen");
         resultSearchButton = new JButton();
         resultSearchButton.setText("Another Search");
         resultScreen.add(resultSearchButton, BorderLayout.SOUTH);
@@ -1327,6 +1351,13 @@ public class MainFrame extends JFrame {
         scrollPane1.setBorder(BorderFactory.createTitledBorder(null, "", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         searchResultsTable.setAutoResizeMode(0);
         scrollPane1.setViewportView(searchResultsTable);
+        manageLogoutP = new JPanel();
+        manageLogoutP.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        tabbedPane1.addTab("Log out", manageLogoutP);
+        managerLogOutButton = new JButton();
+        managerLogOutButton.setHorizontalTextPosition(0);
+        managerLogOutButton.setText("Log out");
+        manageLogoutP.add(managerLogOutButton);
     }
 
     /**
