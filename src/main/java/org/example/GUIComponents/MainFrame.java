@@ -82,6 +82,7 @@ public class MainFrame extends JFrame {
     private JButton resultSearchButton;
     private JTable searchResultsTable;
     private JLabel searchErrorLabel;
+    private JLabel addBookinStockF;
 
     public MainFrame(String title) {
         super(title);
@@ -170,7 +171,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String title, author, pub, year, cat;
-                int isbn, price, min;
+                int isbn, price, min, inStock;
 
                 title = addBookTitleF.getText();
                 author = addBookAuthorF.getText();
@@ -180,15 +181,17 @@ public class MainFrame extends JFrame {
                 String tempPrice = addBookPriceF.getText();
                 String tempMin = addBookMinF.getText();
                 String tempisbn = addBookISBNF.getText();
+                String tempStock = addBookinStockF.getText();
                 if (tempisbn.isEmpty() || title.isEmpty() || author.isEmpty() || pub.isEmpty()
-                        || year.isEmpty() || cat.isEmpty() || tempPrice.isEmpty() || tempMin.isEmpty()) {
+                        || year.isEmpty() || cat.isEmpty() || tempPrice.isEmpty() || tempMin.isEmpty() || tempStock.isEmpty()) {
                     addBookErrorLabel.setText("Fill all fields");
                     return;
                 }
                 isbn = Integer.parseInt(tempisbn);
                 price = Integer.parseInt(tempPrice);
                 min = Integer.parseInt(tempMin);
-                boolean result = Controller.tryAddBook(isbn, title, author, pub, year, price, cat, min);
+                inStock = Integer.parseInt(tempStock);
+                boolean result = Controller.tryAddBook(isbn, title, author, pub, year, price, cat, min, inStock);
 
                 if (!result) {
                     addBookErrorLabel.setText("Book already exists");

@@ -11,7 +11,7 @@ public class Controller {
         return true;
     }
 
-    public static boolean tryAddBook(int isbn, String title, String author, String publisher, String year, int price, String category, int minAmount)
+    public static boolean tryAddBook(int isbn, String title, String author, String publisher, String year, int price, String category, int minAmount, int inStock)
     {//Should return true if the book isbn isn't already in the DB
         return true;
     }
