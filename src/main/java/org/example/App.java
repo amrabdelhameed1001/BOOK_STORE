@@ -5,10 +5,6 @@ import javax.swing.*;
 
 import org.example.GUIComponents.MainFrame;
 
-/**
- * Hello world!
- *
- */
 public class App
 {
     public static void main( String[] args )

@@ -88,6 +88,14 @@ public class MainFrame extends JFrame {
     private JButton managerLogOutButton;
     private JPanel customerLogoutP;
     private JButton customerLogoutButton;
+    private JPanel placeOrderP;
+    private JPanel ordersP;
+    private JTable ordersTable;
+    private JTextField placeOrderISBNF;
+    private JTextField placeOrderQuantityF;
+    private JButton placeOrderBackButton;
+    private JButton placeOrderButton;
+    private JLabel placeOrderErrorLabel;
 
     public MainFrame(String title) {
         super(title);
@@ -152,7 +160,7 @@ public class MainFrame extends JFrame {
                     signupErrorLabel.setText("Please fill all the fields");
                     return;
                 }
-                boolean result = Controller.trySignup(fname, lname, pass, username, email, address, phone, userType);
+                boolean result = Controller.trySignup(username, pass, lname, fname, email, phone, address, userType);
                 if (!result) {
                     signupErrorLabel.setText("Invalid signup due to DB conflict");
                     return;
@@ -312,6 +320,33 @@ public class MainFrame extends JFrame {
                 logout();
             }
         });
+        placeOrderBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "ManageActionsScreen");
+                placeOrderErrorLabel.setText("");
+            }
+        });
+        placeOrderButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String strisbn, strquantity;
+                strisbn = placeOrderISBNF.getText();
+                strquantity = placeOrderQuantityF.getText();
+                if (strisbn.isEmpty() || strquantity.isEmpty()) {
+                    placeOrderErrorLabel.setText("Fill all fields");
+                    return;
+                }
+                try {
+                    int isbn = Integer.parseInt(strisbn);
+                    int quantity = Integer.parseInt(strquantity);
+                    boolean result = Controller.tryPlaceOrder(isbn, quantity);
+                } catch (NumberFormatException exception) {
+                    placeOrderErrorLabel.setText("Invalid input. Make sure the quantity and ISBN are numbers");
+                    return;
+                }
+            }
+        });
     }
 
     void loginAs(String username, String password, String type) {
@@ -337,6 +372,7 @@ public class MainFrame extends JFrame {
         ((CardLayout) rootPanel.getLayout()).show(rootPanel, "LoginScreen");
         loggedUser = null;
     }
+
     void signup() {
         String fname, lname, username, pass, email, address, phone, userType;
         fname = fnameF.getText();
@@ -1239,69 +1275,152 @@ public class MainFrame extends JFrame {
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         promoteUserP.add(promoteLabel, gbc);
-        manageSearchDeck = new JPanel();
-        manageSearchDeck.setLayout(new CardLayout(0, 0));
-        tabbedPane1.addTab("Search", manageSearchDeck);
-        searchScreen = new JPanel();
-        searchScreen.setLayout(new GridBagLayout());
-        manageSearchDeck.add(searchScreen, "SearchScreen");
-        final JPanel spacer15 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 3;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        searchScreen.add(spacer15, gbc);
-        final JPanel spacer16 = new JPanel();
-        gbc = new GridBagConstraints();
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.VERTICAL;
-        searchScreen.add(spacer16, gbc);
+        placeOrderP = new JPanel();
+        placeOrderP.setLayout(new GridBagLayout());
+        manageDeck.add(placeOrderP, "PlaceOrderScreen");
         final JLabel label32 = new JLabel();
         label32.setText("ISBN");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
+        gbc.ipady = 30;
+        placeOrderP.add(label32, gbc);
+        final JPanel spacer15 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        placeOrderP.add(spacer15, gbc);
+        final JPanel spacer16 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        placeOrderP.add(spacer16, gbc);
+        placeOrderISBNF = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        placeOrderP.add(placeOrderISBNF, gbc);
+        final JLabel label33 = new JLabel();
+        label33.setText("Order Quantity");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.ipady = 30;
+        placeOrderP.add(label33, gbc);
+        placeOrderQuantityF = new JTextField();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        placeOrderP.add(placeOrderQuantityF, gbc);
+        placeOrderBackButton = new JButton();
+        placeOrderBackButton.setText("Back");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        placeOrderP.add(placeOrderBackButton, gbc);
+        placeOrderButton = new JButton();
+        placeOrderButton.setText("Place Order");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        placeOrderP.add(placeOrderButton, gbc);
+        placeOrderErrorLabel = new JLabel();
+        placeOrderErrorLabel.setForeground(new Color(-4511196));
+        placeOrderErrorLabel.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.ipady = 50;
+        placeOrderP.add(placeOrderErrorLabel, gbc);
+        ordersP = new JPanel();
+        ordersP.setLayout(new BorderLayout(0, 0));
+        manageDeck.add(ordersP, "OrdersScreen");
+        final JPanel panel12 = new JPanel();
+        panel12.setLayout(new CardLayout(0, 0));
+        panel12.setPreferredSize(new Dimension(50, 0));
+        ordersP.add(panel12, BorderLayout.EAST);
+        final JPanel panel13 = new JPanel();
+        panel13.setLayout(new CardLayout(0, 0));
+        panel13.setPreferredSize(new Dimension(0, 50));
+        ordersP.add(panel13, BorderLayout.SOUTH);
+        final JScrollPane scrollPane1 = new JScrollPane();
+        ordersP.add(scrollPane1, BorderLayout.CENTER);
+        ordersTable = new JTable();
+        scrollPane1.setViewportView(ordersTable);
+        manageSearchDeck = new JPanel();
+        manageSearchDeck.setLayout(new CardLayout(0, 0));
+        tabbedPane1.addTab("Search", manageSearchDeck);
+        searchScreen = new JPanel();
+        searchScreen.setLayout(new GridBagLayout());
+        manageSearchDeck.add(searchScreen, "SearchScreen");
+        final JPanel spacer17 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        searchScreen.add(spacer17, gbc);
+        final JPanel spacer18 = new JPanel();
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        searchScreen.add(spacer18, gbc);
+        final JLabel label34 = new JLabel();
+        label34.setText("ISBN");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        searchScreen.add(label32, gbc);
-        final JLabel label33 = new JLabel();
-        label33.setText("Title");
+        searchScreen.add(label34, gbc);
+        final JLabel label35 = new JLabel();
+        label35.setText("Title");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        searchScreen.add(label33, gbc);
-        final JLabel label34 = new JLabel();
-        label34.setText("Author");
+        searchScreen.add(label35, gbc);
+        final JLabel label36 = new JLabel();
+        label36.setText("Author");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        searchScreen.add(label34, gbc);
-        final JLabel label35 = new JLabel();
-        label35.setText("Publisher");
+        searchScreen.add(label36, gbc);
+        final JLabel label37 = new JLabel();
+        label37.setText("Publisher");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        searchScreen.add(label35, gbc);
-        final JLabel label36 = new JLabel();
-        label36.setText("Category");
+        searchScreen.add(label37, gbc);
+        final JLabel label38 = new JLabel();
+        label38.setText("Category");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.ipadx = 10;
         gbc.ipady = 20;
-        searchScreen.add(label36, gbc);
+        searchScreen.add(label38, gbc);
         searchISBNF = new JTextField();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -1353,14 +1472,14 @@ public class MainFrame extends JFrame {
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         searchScreen.add(searchButton, gbc);
-        final JPanel panel12 = new JPanel();
-        panel12.setLayout(new CardLayout(0, 0));
+        final JPanel panel14 = new JPanel();
+        panel14.setLayout(new CardLayout(0, 0));
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 5;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.ipady = 30;
-        searchScreen.add(panel12, gbc);
+        searchScreen.add(panel14, gbc);
         searchErrorLabel = new JLabel();
         searchErrorLabel.setForeground(new Color(-4511196));
         searchErrorLabel.setText("");
@@ -1374,12 +1493,12 @@ public class MainFrame extends JFrame {
         resultSearchButton = new JButton();
         resultSearchButton.setText("Another Search");
         resultScreen.add(resultSearchButton, BorderLayout.SOUTH);
-        final JScrollPane scrollPane1 = new JScrollPane();
-        scrollPane1.setAutoscrolls(false);
-        resultScreen.add(scrollPane1, BorderLayout.CENTER);
-        scrollPane1.setBorder(BorderFactory.createTitledBorder(null, "", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        final JScrollPane scrollPane2 = new JScrollPane();
+        scrollPane2.setAutoscrolls(false);
+        resultScreen.add(scrollPane2, BorderLayout.CENTER);
+        scrollPane2.setBorder(BorderFactory.createTitledBorder(null, "", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         searchResultsTable.setAutoResizeMode(0);
-        scrollPane1.setViewportView(searchResultsTable);
+        scrollPane2.setViewportView(searchResultsTable);
         manageLogoutP = new JPanel();
         manageLogoutP.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         tabbedPane1.addTab("Log out", manageLogoutP);

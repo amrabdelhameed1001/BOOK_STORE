@@ -1076,6 +1076,127 @@
                       </component>
                     </children>
                   </grid>
+                  <grid id="2f8be" binding="placeOrderP" layout-manager="GridBagLayout">
+                    <constraints>
+                      <card name="PlaceOrderScreen"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="3981d" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <gridbag weightx="0.0" weighty="0.0" ipady="30"/>
+                        </constraints>
+                        <properties>
+                          <text value="ISBN"/>
+                        </properties>
+                      </component>
+                      <hspacer id="978e7">
+                        <constraints>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <gridbag weightx="0.0" weighty="0.0"/>
+                        </constraints>
+                      </hspacer>
+                      <vspacer id="21ab9">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                          <gridbag weightx="0.0" weighty="0.0"/>
+                        </constraints>
+                      </vspacer>
+                      <component id="917a8" class="javax.swing.JTextField" binding="placeOrderISBNF">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                          <gridbag weightx="0.0" weighty="0.0"/>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="83568" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <gridbag weightx="0.0" weighty="0.0" ipady="30"/>
+                        </constraints>
+                        <properties>
+                          <text value="Order Quantity"/>
+                        </properties>
+                      </component>
+                      <component id="69c69" class="javax.swing.JTextField" binding="placeOrderQuantityF">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                          <gridbag weightx="0.0" weighty="0.0"/>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="e7364" class="javax.swing.JButton" binding="placeOrderBackButton">
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <gridbag weightx="0.0" weighty="0.0"/>
+                        </constraints>
+                        <properties>
+                          <text value="Back"/>
+                        </properties>
+                      </component>
+                      <component id="b1710" class="javax.swing.JButton" binding="placeOrderButton" default-binding="true">
+                        <constraints>
+                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <gridbag weightx="0.0" weighty="0.0"/>
+                        </constraints>
+                        <properties>
+                          <text value="Place Order"/>
+                        </properties>
+                      </component>
+                      <component id="d1f6d" class="javax.swing.JLabel" binding="placeOrderErrorLabel">
+                        <constraints>
+                          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <gridbag weightx="0.0" weighty="0.0" ipady="50"/>
+                        </constraints>
+                        <properties>
+                          <foreground color="-4511196"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="9b992" binding="ordersP" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints>
+                      <card name="OrdersScreen"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <grid id="e0131" layout-manager="CardLayout" hgap="0" vgap="0">
+                        <constraints border-constraint="East"/>
+                        <properties>
+                          <preferredSize width="50" height="0"/>
+                        </properties>
+                        <border type="none"/>
+                        <children/>
+                      </grid>
+                      <grid id="c3a9e" layout-manager="CardLayout" hgap="0" vgap="0">
+                        <constraints border-constraint="South"/>
+                        <properties>
+                          <preferredSize width="0" height="50"/>
+                        </properties>
+                        <border type="none"/>
+                        <children/>
+                      </grid>
+                      <scrollpane id="e6569">
+                        <constraints border-constraint="Center"/>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="f195d" class="javax.swing.JTable" binding="ordersTable">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                    </children>
+                  </grid>
                 </children>
               </grid>
               <grid id="67ba7" binding="manageSearchDeck" layout-manager="CardLayout" hgap="0" vgap="0">

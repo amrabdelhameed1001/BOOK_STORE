@@ -5,9 +5,11 @@ import java.util.HashMap;
 
 public class Controller {
 
-    static final String DB_URL = "jdbc:mysql://localhost:3306";
-    static final String USER = "root";
-    static final String PASS = "2972001333";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/BOOK_STORE";
+
+    //This changes from computer to computer. Make sure to change this before running.
+    static final String USER = "Java";
+    static final String PASS = "1234";
 
     // this function returns true if the username does not exist in the db table(no 2 usernames are the same)
     // and it returns false if the username exists in the db table
@@ -72,14 +74,14 @@ public class Controller {
         newUser.setPhone(phone); newUser.setAddress(address);
         newUser.setType(type);
 
-        final String QUERY = "insert into user_info values(\"" + newUser.getID() + "\",\"" + newUser.getUserName() + "\",\"" +
+        final String QUERY = "insert into user_info values(" + newUser.getID() + ",\"" + newUser.getUserName() + "\",\"" +
                 newUser.getPassword() + "\",\"" + newUser.getLastName() + "\",\"" + newUser.getFirstName()
                 + "\",\"" + newUser.getEmail() + "\",\"" + newUser.getPhone() + "\",\"" +
-                newUser.getAddress() + "\",\"" + newUser.getType() + "\";";
+                newUser.getAddress() + "\",\"" + newUser.getType() + "\");";
         System.out.println(QUERY);
-        try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        try{
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
             Statement stmt = conn.createStatement();
-        ) {
             String sql = "USE BOOK_STORE";
             stmt.executeUpdate(sql);
             stmt.executeUpdate(QUERY);
@@ -540,7 +542,8 @@ public class Controller {
     {//Should return an array of Book objects that meet the search criterea.
         //Any of the arguments can be null meaning they aren't part of the search.
         //At least one of the arguments will not be null.
-        return null;
+        //Should return an array of Book objects. If no books meet the search criteria then return an empty array;
+        return new Book[0];
     }
 
 
@@ -568,4 +571,18 @@ public class Controller {
         }
         return true;
     }
+
+    //This is called when a manager tries to place an order for a book.
+    public static boolean tryPlaceOrder(int isbn, int quantity)
+    {//Should check if isbn is valid. If yes then place the order.
+        return true;
+    }
+
+    public static Order[] getOrders()
+    {//Should all orders that haven't been confirmed yet.
+        return new Order[0];
+    }
+
 }
+
+
