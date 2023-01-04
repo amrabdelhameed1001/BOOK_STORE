@@ -312,7 +312,7 @@ public class MainFrame extends JFrame {
             signupErrorLabel.setText("Please fill all the fields");
             return;
         }
-        boolean result = Controller.trySignup(fname, lname, pass, username, email, address, phone, userType);
+        boolean result = Controller.trySignup(username, pass, lname, fname, email, phone, address, userType);
         if (!result) {
             signupErrorLabel.setText("Invalid signup due to DB conflict");
             return;
