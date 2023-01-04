@@ -1,4 +1,4 @@
-  drop SCHEMA BOOK_STORE;
+ drop SCHEMA BOOK_STORE;
  CREATE SCHEMA BOOK_STORE;
 use book_store;
 
@@ -14,6 +14,12 @@ use book_store;
  Address VARCHAR(100),
   primary key(customerId)
  );
+ 
+ CREATE TABLE shopping_cart(
+ customerID INTEGER,
+ bookISBN INTEGER,
+ bookQuantity INTEGER
+ );
 
 CREATE TABLE PUBLISHER(
   Name varchar(50),
@@ -25,7 +31,7 @@ CREATE TABLE PUBLISHER(
 CREATE TABLE AUTHORS(
   Book_id int,
   Author_name varchar(50),
-  primary key (Author_name),
+  primary key (Author_name)
   -- foreign key (Book_id) references BOOK(ISBN) on update cascade
 );
 
@@ -62,11 +68,11 @@ CREATE TABLE BOOK (
 CREATE TABLE BOOK_ORDER(
   Order_id INTEGER PRIMARY key,
   customerID INTEGER,
-  bookISBN int,
-  bookQuantity int,
-  primary key(Order_id),
-  foreign key (bookISBN) references BOOK(ISBN) on update cascade
-  foreign key (customerID) referces user_info(customerID) on update cascade,
+  Book_id int,
+  quantity int,
+  -- primary key(Order_id),
+  foreign key (Book_id) references BOOK(ISBN) on update cascade,
+  foreign key (customerID) references user_info(customerID) on update cascade
 --  foreign key (Borrower_id) references BORROWER(Card_no) on update cascade
 
 );
