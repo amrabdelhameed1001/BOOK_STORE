@@ -8,11 +8,13 @@ drop Schema BOOK_STORE;
  Password VARCHAR(100),
  Lname VARCHAR(30),
  Fname VARCHAR(20), 
- Email VARCHAR(30),
+ Email VARCHAR(30) ,
  Phone CHAR(11),
  Address VARCHAR(100),
  type VARCHAR(8),
- primary key(userID)
+ primary key(userID),
+ unique (userName),
+ unique (Email)
  );
 
 CREATE TABLE PUBLISHER(
@@ -22,11 +24,6 @@ CREATE TABLE PUBLISHER(
   PRIMARY KEY(Name)
 );
  
- CREATE TABLE shopping_cart(
- customerID INTEGER,
- bookISBN INTEGER,
- bookQuantity INTEGER
- );
  
  --  CREATE TABLE user_types(
 --  userName VARCHAR(50),
@@ -65,14 +62,6 @@ CREATE TABLE AUTHORS(
 );
 
 
-CREATE TABLE BORROWER(
-  Card_no int,
-  Name varchar(50),
-  Address varchar(100),
-  Phone char(9),
-  PRIMARY KEY(Card_no)
-);
-
 CREATE TABLE BOOK_ORDER(
   Order_id INTEGER,
   customerID INTEGER,
@@ -81,4 +70,21 @@ CREATE TABLE BOOK_ORDER(
   primary key(Order_id),
   foreign key (Book_id) references BOOK(ISBN) on update cascade,
   foreign key (customerID) references user_info(userID) on update cascade
+);
+
+ CREATE TABLE shopping_cart(
+ customerID INTEGER,
+ bookISBN INTEGER,
+ bookQuantity INTEGER,
+ foreign key (customerID) references user_info(userID) on update cascade,
+ foreign key (bookISBN) references BOOK(ISBN) on update cascade
+ );
+ 
+ 
+ CREATE TABLE BORROWER(
+  Card_no int,
+  Name varchar(50),
+  Address varchar(100),
+  Phone char(9),
+  PRIMARY KEY(Card_no)
 );
