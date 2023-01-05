@@ -63,11 +63,13 @@ CREATE TABLE AUTHORS(
 
 
 CREATE TABLE BOOK_ORDER(
-  Order_id INTEGER,
-  Book_id int,
-  quantity int,
+  Order_id INTEGER ,
+  bookISBN int,
+  bookQuantity int,
+  confirmed varchar(8),
   primary key(Order_id),
-  foreign key (Book_id) references BOOK(ISBN) on update cascade
+  foreign key (bookISBN) references BOOK(ISBN) on update cascade
+--  foreign key (Borrower_id) references BORROWER(Card_no) on update cascade
 );
 
  CREATE TABLE shopping_cart(
