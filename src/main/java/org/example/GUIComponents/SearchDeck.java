@@ -42,7 +42,9 @@ public class SearchDeck {
                 super.mouseClicked(e);
                 int selectedCol = resultTable.getSelectedColumn();
                 if (selectedCol == 7) {//Add to cart
-
+                    String isbn = String.valueOf((Integer) resultTable.getValueAt(resultTable.getSelectedRow(), 0));
+                    new Controller().tryAddBookToCart(isbn, 1);
+                    mainScreen.updateCart();
                 } else if (selectedCol == 8) {//Update book
                     int isbn = (Integer) resultTable.getValueAt(resultTable.getSelectedRow(), selectedCol);
                     mainScreen.goToUpdateBook(0);
@@ -97,6 +99,12 @@ public class SearchDeck {
                     }
                 }
                 if (searchResults == null || searchResults.length == 0) resultLabel.setText("No results found");
+            }
+        });
+        resultAnotherSearchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((CardLayout) deck.getLayout()).show(deck, "SearchScreen");
             }
         });
     }

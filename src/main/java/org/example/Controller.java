@@ -449,7 +449,7 @@ public class Controller {
     }
 
     // insert a tuple from shopping cart into done list
-    public boolean insert_into_done(int id, int ISBN, int quantity, float price){
+    public static boolean insert_into_done(int id, int ISBN, int quantity, float price){
         java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
         final String QUERY = "insert into done_orders values(\"" + id + "\",\"" + ISBN + "\"," + quantity + "," + price + ",\"" + sqlDate +"\");";
         System.out.println(QUERY);
@@ -496,9 +496,58 @@ public class Controller {
         return false;
     }
 
+    static long generateAddress(){
+        long id = 0;
+        final String QUERY = "SELECT count(*) from publisher;";
+        System.out.println(QUERY);
+        try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement stmt = conn.createStatement();
+        ) {
+            String sql = "USE BOOK_STORE";
+            stmt.executeUpdate(sql);
+            ResultSet rs = stmt.executeQuery(QUERY);
+            if(rs.next())
+                id = rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id+1;
+    }
+    static void insertPublisher(String publisher){
+        final String QUERY2 = "insert into publisher values (\""+publisher+"\",\"address"+generateAddress()+"\",\"012222222222\");";
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+        ) {
+            String sql = "USE BOOK_STORE";
+            stmt.executeUpdate(sql);
+            stmt.executeUpdate(QUERY2);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    static boolean alreadyExistBook(int isbn){
+        int num=0;
+        final String QUERY2 = "select count(*) from book where isbn="+isbn+";";
+        System.out.println(QUERY2);
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+        ) {
+            String sql = "USE BOOK_STORE";
+            stmt.executeUpdate(sql);
+            ResultSet rs = stmt.executeQuery(QUERY2);
+            if(rs.next()){
+                num= rs.getInt("count(*)");
+            }
+            if(num==0){
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
     public static boolean tryAddBook(int ISBN, String title, String author, String publisher_name, String publication_year,
-                                     float selling_price, String category , int threshold, int in_stock)
-    {
+                                     float selling_price, String category , int threshold, int in_stock){
         System.out.println("d5l");
         boolean flag = false;
         final String QUERY1 = "Select count(*) from publisher where name = \""+publisher_name+"\";";
@@ -514,15 +563,13 @@ public class Controller {
                 num = rs.getInt("count(*)");
                 System.out.println(num);
             }
-            if(num==0){
-                return false;
-            }else{
-                flag= true;
+            if(num==0&&!alreadyExistBook(ISBN)){
+                insertPublisher(publisher_name);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if(flag) {
+        if(!alreadyExistBook(ISBN)) {
             final String QUERY2 = "call Add_new_books(" + ISBN + ", \"" + title + "\", \"" + author + "\", \"" + publisher_name +
                     "\", \"" + publication_year + "\"," + selling_price + ", \"" + category + "\"," + in_stock + ", " + threshold + ");";
             System.out.println(QUERY2);
@@ -535,8 +582,10 @@ public class Controller {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            return true;
+        }else{
+            return false;
         }
-        return true;
     }
 
     public static Book[] search(Integer isbn, String title, String author, String pub, String cat)
@@ -548,11 +597,28 @@ public class Controller {
     }
 
 
-    public static boolean tryUpdateBook(int isbn, int soldCopies)
-    {//Takes a book and the number of copies sold. Should update the DB by subtracting the in-stock from soldCopies
-        //If the book isn't registered or not enough copies are available then return false.
-        return true;
+    public boolean modify(int ISBN,int in_stock){
+        if(alreadyExistBook(ISBN)){
+            boolean flag = false;
+            final String QUERY2 = " update book set in_stock=" + in_stock +" where ISBN ="+ISBN+";";
+
+            System.out.println(QUERY2);
+            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                 Statement stmt = conn.createStatement();
+            ) {
+                String sql = "USE BOOK_STORE";
+                stmt.executeUpdate(sql);
+                stmt.executeUpdate(QUERY2);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }else{
+            return false;
+        }
     }
+
+
     public static boolean OrderBook()
     {
         return true;
@@ -575,15 +641,105 @@ public class Controller {
     }
 
     //This is called when a manager tries to place an order for a book.
-    public static boolean tryPlaceOrder(int isbn, int quantity)
-    {//Should check if isbn is valid. If yes then place the order.
+    public boolean placeOrder(int ISBN){
+        int in_stock=0;
+        int threshold=0;
+        boolean flag= false;
+        final String QUERY1 = "select in_stock, threshold from book where isbn="+ISBN+";";
+        System.out.println(QUERY1);
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+        ) {
+            String sql = "USE BOOK_STORE";
+            stmt.executeUpdate(sql);
+            ResultSet rs= stmt.executeQuery(QUERY1);
+            if(rs.next()) {
+                in_stock = rs.getInt("in_stock");
+                threshold = rs.getInt("threshold");
+            }
+            if(in_stock<=threshold){
+                flag=true;
+            }
+            else{
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(flag){
+            final String QUERY2 = "insert into book_order values("+generateID()+","+ISBN+","+1000+");";
+            System.out.println(QUERY2);
+            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                 Statement stmt = conn.createStatement();
+            ) {
+                String sql = "USE BOOK_STORE";
+                stmt.executeUpdate(sql);
+                stmt.executeUpdate(QUERY2);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+    }
+    public boolean confirmOrder(int order_id){
+        int in_stock=0;
+        int threshold=0;
+        int quantity=0;
+        int isbn= 0;
+        boolean flag= false;
+        final String QUERY1 = "select bookisbn, bookQuantity from book_order where order_id="+order_id+";";
+        System.out.println(QUERY1);
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+        ) {
+            String sql = "USE BOOK_STORE";
+            stmt.executeUpdate(sql);
+            ResultSet rs= stmt.executeQuery(QUERY1);
+            if(rs.next()) {
+                isbn = rs.getInt("bookisbn");
+                quantity= rs.getInt("bookquantity");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        final String QUERY3 = "select in_stock, threshold from book where isbn="+isbn+";";
+        System.out.println(QUERY3);
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+        ) {
+            String sql = "USE BOOK_STORE";
+            stmt.executeUpdate(sql);
+            ResultSet rs= stmt.executeQuery(QUERY3);
+            if(rs.next()) {
+                in_stock = rs.getInt("in_stock");
+                threshold = rs.getInt("threshold");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        int newIn_stock=quantity+in_stock;
+        System.out.println(newIn_stock);
+        final String QUERY2 = "update book set in_stock="+newIn_stock+" where isbn="+isbn+";";
+        System.out.println(QUERY2);
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+        ) {
+            String sql = "USE BOOK_STORE";
+            stmt.executeUpdate(sql);
+            stmt.executeUpdate(QUERY2);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
     public static Order[] getOrders()
-    {//Should all orders that haven't been confirmed yet.
-        return new Order[0];
+    {//Should return all orders that haven't been confirmed yet. return null if no orders exist
+
+        return null;
     }
+
 
 }
 

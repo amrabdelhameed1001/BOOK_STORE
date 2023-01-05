@@ -448,7 +448,7 @@
           </hspacer>
           <vspacer id="24ba2">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
           </vspacer>
@@ -461,27 +461,9 @@
             </constraints>
             <properties/>
           </component>
-          <component id="e275a" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag weightx="0.0" weighty="0.0" ipady="30"/>
-            </constraints>
-            <properties>
-              <text value="Order Quantity"/>
-            </properties>
-          </component>
-          <component id="6ab91" class="javax.swing.JTextField" binding="placeOrderQuantityF">
-            <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-              <gridbag weightx="0.0" weighty="0.0"/>
-            </constraints>
-            <properties/>
-          </component>
           <component id="a1d20" class="javax.swing.JButton" binding="placeOrderBackButton">
             <constraints>
-              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
@@ -490,7 +472,7 @@
           </component>
           <component id="271f7" class="javax.swing.JButton" binding="placeOrderButton" default-binding="true">
             <constraints>
-              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
@@ -499,7 +481,7 @@
           </component>
           <component id="13db" class="javax.swing.JLabel" binding="placeOrderErrorLabel">
             <constraints>
-              <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0" ipady="50"/>
             </constraints>
             <properties>
@@ -544,9 +526,11 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="ddc1d" class="javax.swing.JTable" binding="ordersTable">
+              <component id="ddc1d" class="javax.swing.JTable" binding="ordersTable" custom-create="true">
                 <constraints/>
-                <properties/>
+                <properties>
+                  <autoResizeMode value="0"/>
+                </properties>
               </component>
             </children>
           </scrollpane>
@@ -595,7 +579,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Sold copies"/>
+              <text value="Copies in-stock"/>
             </properties>
           </component>
           <component id="c788f" class="javax.swing.JTextField" binding="updateBookSoldF">

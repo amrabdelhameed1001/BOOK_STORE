@@ -1,5 +1,6 @@
 package org.example.GUIComponents;
 
+import org.example.Controller;
 import org.example.User;
 
 import javax.swing.*;
@@ -26,6 +27,7 @@ public class AppFrame extends JFrame
 
     public void logout()
     {
+        new Controller().logOut();
         remove(currentScreen);
         currentScreen = new SigninDeck().getRoot();
         add(currentScreen);

@@ -64,12 +64,10 @@ CREATE TABLE AUTHORS(
 
 CREATE TABLE BOOK_ORDER(
   Order_id INTEGER,
-  customerID INTEGER,
   Book_id int,
   quantity int,
   primary key(Order_id),
-  foreign key (Book_id) references BOOK(ISBN) on update cascade,
-  foreign key (customerID) references user_info(userID) on update cascade
+  foreign key (Book_id) references BOOK(ISBN) on update cascade
 );
 
  CREATE TABLE shopping_cart(

@@ -4,7 +4,6 @@ package org.example;
 import javax.swing.*;
 
 import org.example.GUIComponents.AppFrame;
-import org.example.GUIComponents.MainFrame;
 
 public class App
 {
