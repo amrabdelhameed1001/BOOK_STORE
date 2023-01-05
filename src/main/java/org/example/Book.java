@@ -2,13 +2,14 @@ package org.example;
 
 public class Book {
     public String title, author, publisher, year, cat;
-    public int price, isbn;
+    public int isbn, quantity;
+    public float price;
 
     public Book()
     {
 
     }
-    public Book(int isbn, String title, String author, String pub, String year, String cat, int price)
+    public Book(int isbn, String title, String author, String pub, String year, String cat, float price)
     {
         this.isbn = isbn;
         this.title = title;
