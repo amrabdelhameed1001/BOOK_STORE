@@ -775,15 +775,32 @@ public class Controller {
 
     public static boolean promoteUser(String username)
     {
-        
-        final String QUERY3 = "update user_info set type = \"Manager\" where username=\""+username+"\";";
-        System.out.println(QUERY3);
+        final String QUERY1 = "select count(*) from user_info where username=\""+username+"\";";
+        int count=0;
+        System.out.println(QUERY1);
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
              Statement stmt = conn.createStatement();
         ) {
             String sql = "USE BOOK_STORE";
             stmt.executeUpdate(sql);
-            stmt.executeUpdate(QUERY3);
+            ResultSet rs= stmt.executeQuery(QUERY1);
+            if(rs.next()){
+                count=rs.getInt(1);
+            }
+            if(count==0) {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        final String QUERY2 = "update user_info set type = \"Manager\" where username=\""+username+"\";";
+        System.out.println(QUERY2);
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+        ) {
+            String sql = "USE BOOK_STORE";
+            stmt.executeUpdate(sql);
+            stmt.executeUpdate(QUERY2);
         } catch (SQLException e) {
             e.printStackTrace();
         }

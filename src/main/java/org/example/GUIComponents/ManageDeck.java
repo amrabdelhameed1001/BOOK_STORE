@@ -148,7 +148,7 @@ public class ManageDeck {
                 }
                 boolean result = Controller.promoteUser(username);
                 if (result) promoteLabel.setText("Success!");
-                else promoteLabel.setText("Already promoted.");
+                else promoteLabel.setText("Can't Promote.");
             }
         });
         placeOrderBackButton.addActionListener(new ActionListener() {
