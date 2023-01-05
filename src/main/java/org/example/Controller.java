@@ -548,8 +548,9 @@ public class Controller {
     }
 
 
-    public static boolean tryUpdateBook(int isbn, String title, String category)
-    {
+    public static boolean tryUpdateBook(int isbn, int soldCopies)
+    {//Takes a book and the number of copies sold. Should update the DB by subtracting the in-stock from soldCopies
+        //If the book isn't registered or not enough copies are available then return false.
         return true;
     }
     public static boolean OrderBook()

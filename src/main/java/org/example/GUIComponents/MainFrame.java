@@ -118,165 +118,165 @@ public class MainFrame extends JFrame {
 
 
         $$$setupUI$$$();
-        toLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((CardLayout) rootPanel.getLayout()).show(rootPanel, "LoginScreen");
-            }
-        });
-        toSignup.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((CardLayout) rootPanel.getLayout()).show(rootPanel, "SignupScreen");
-            }
-        });
-        loginBackButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((CardLayout) rootPanel.getLayout()).show(rootPanel, "StartScreen");
-                loginErrorLabel.setText("");
-            }
-        });
-        signupBackButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((CardLayout) rootPanel.getLayout()).show(rootPanel, "StartScreen");
-                signupErrorLabel.setText("");
-            }
-        });
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = loginUserF.getText();
-                String password = loginPassF.getText();
-                String type = (String) loginBox.getSelectedItem();
-                loginAs(username, password, type);
-            }
-        });
-        signupButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String fname, lname, username, pass, email, address, phone, userType;
-                fname = fnameF.getText();
-                lname = lnameF.getText();
-                username = usernameF.getText();
-                pass = String.valueOf(passwordField1.getPassword());
-                email = emailF.getText();
-                address = addressF.getText();
-                phone = phoneF.getText();
-                userType = (String) signupUserTypeBox.getSelectedItem();
-                String p1 = String.valueOf(passwordField1.getPassword());
-                String p2 = String.valueOf(passwordField2.getPassword());
-                if (!p1.equals(p2)) {
-                    signupErrorLabel.setText("The two passwords aren't the same");
-                    return;
-                }
-                if (fname.isEmpty() || lname.isEmpty() || username.isEmpty() ||
-                        pass.isEmpty() || email.isEmpty() || address.isEmpty() || phone.isEmpty()) {
-                    signupErrorLabel.setText("Please fill all the fields");
-                    return;
-                }
-                boolean result = Controller.trySignup(username, pass, lname, fname, email, phone, address, userType);
-                if (!result) {
-                    signupErrorLabel.setText("Invalid signup due to DB conflict");
-                    return;
-                }
-                loginAs(username, pass, userType);
-            }
-        });
-        goToAddBookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "AddBookScreen");
-            }
-        });
-        goToPromoteUserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "PromoteUserScreen");
-            }
-        });
-        goToUpdateBookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        goToSalesReportButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        goToOrderBookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        addBookBackButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "ManageActionsScreen");
-                addBookErrorLabel.setText("");
-            }
-        });
-        addBookConfirmButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String title, author, pub, year, cat;
-                int isbn, price, min, inStock;
-
-                title = addBookTitleF.getText();
-                author = addBookAuthorF.getText();
-                pub = addBookPubF.getText();
-                year = addBookYearF.getText();
-                cat = (String) addBookCatBox.getSelectedItem();
-                String tempPrice = addBookPriceF.getText();
-                String tempMin = addBookMinF.getText();
-                String tempisbn = addBookISBNF.getText();
-                String tempStock = addBookinStockF.getText();
-                if (tempisbn.isEmpty() || title.isEmpty() || author.isEmpty() || pub.isEmpty()
-                        || year.isEmpty() || cat.isEmpty() || tempPrice.isEmpty() || tempMin.isEmpty() || tempStock.isEmpty()) {
-                    addBookErrorLabel.setText("Fill all fields");
-                    return;
-                }
-                isbn = Integer.parseInt(tempisbn);
-                price = Integer.parseInt(tempPrice);
-                min = Integer.parseInt(tempMin);
-                inStock = Integer.parseInt(tempStock);
-                boolean result = Controller.tryAddBook(isbn, title, author, pub, year, price, cat, min, inStock);
-
-                if (result) {
-                    addBookErrorLabel.setText("Book already exists");
-                    return;
-                }
-                addBookErrorLabel.setText("Success! I think :/");
-                return;
-
-            }
-        });
-        promoteBackButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "ManageActionsScreen");
-                promoteLabel.setText("");
-            }
-        });
-        promoteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = promoteNameField.getText();
-                if (username.isEmpty()) {
-                    promoteLabel.setText("Fill user name");
-                    return;
-                }
-                boolean result = Controller.promoteUser(username);
-                if (result) promoteLabel.setText("Success!");
-                else promoteLabel.setText("Already promoted.");
-            }
-        });
-
+//        toLogin.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                ((CardLayout) rootPanel.getLayout()).show(rootPanel, "LoginScreen");
+//            }
+//        });
+//        toSignup.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                ((CardLayout) rootPanel.getLayout()).show(rootPanel, "SignupScreen");
+//            }
+//        });
+//        loginBackButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                ((CardLayout) rootPanel.getLayout()).show(rootPanel, "StartScreen");
+//                loginErrorLabel.setText("");
+//            }
+//        });
+//        signupBackButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                ((CardLayout) rootPanel.getLayout()).show(rootPanel, "StartScreen");
+//                signupErrorLabel.setText("");
+//            }
+//        });
+//        loginButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                String username = loginUserF.getText();
+//                String password = loginPassF.getText();
+//                String type = (String) loginBox.getSelectedItem();
+//                loginAs(username, password, type);
+//            }
+//        });
+//        signupButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                String fname, lname, username, pass, email, address, phone, userType;
+//                fname = fnameF.getText();
+//                lname = lnameF.getText();
+//                username = usernameF.getText();
+//                pass = String.valueOf(passwordField1.getPassword());
+//                email = emailF.getText();
+//                address = addressF.getText();
+//                phone = phoneF.getText();
+//                userType = (String) signupUserTypeBox.getSelectedItem();
+//                String p1 = String.valueOf(passwordField1.getPassword());
+//                String p2 = String.valueOf(passwordField2.getPassword());
+//                if (!p1.equals(p2)) {
+//                    signupErrorLabel.setText("The two passwords aren't the same");
+//                    return;
+//                }
+//                if (fname.isEmpty() || lname.isEmpty() || username.isEmpty() ||
+//                        pass.isEmpty() || email.isEmpty() || address.isEmpty() || phone.isEmpty()) {
+//                    signupErrorLabel.setText("Please fill all the fields");
+//                    return;
+//                }
+//                boolean result = Controller.trySignup(username, pass, lname, fname, email, phone, address, userType);
+//                if (!result) {
+//                    signupErrorLabel.setText("Invalid signup due to DB conflict");
+//                    return;
+//                }
+//                loginAs(username, pass, userType);
+//            }
+//        });
+//        goToAddBookButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "AddBookScreen");
+//            }
+//        });
+//        goToPromoteUserButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "PromoteUserScreen");
+//            }
+//        });
+//        goToUpdateBookButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//
+//            }
+//        });
+//        goToSalesReportButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//
+//            }
+//        });
+//        goToOrderBookButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//
+//            }
+//        });
+//        addBookBackButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "ManageActionsScreen");
+//                addBookErrorLabel.setText("");
+//            }
+//        });
+//        addBookConfirmButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                String title, author, pub, year, cat;
+//                int isbn, price, min, inStock;
+//
+//                title = addBookTitleF.getText();
+//                author = addBookAuthorF.getText();
+//                pub = addBookPubF.getText();
+//                year = addBookYearF.getText();
+//                cat = (String) addBookCatBox.getSelectedItem();
+//                String tempPrice = addBookPriceF.getText();
+//                String tempMin = addBookMinF.getText();
+//                String tempisbn = addBookISBNF.getText();
+//                String tempStock = addBookinStockF.getText();
+//                if (tempisbn.isEmpty() || title.isEmpty() || author.isEmpty() || pub.isEmpty()
+//                        || year.isEmpty() || cat.isEmpty() || tempPrice.isEmpty() || tempMin.isEmpty() || tempStock.isEmpty()) {
+//                    addBookErrorLabel.setText("Fill all fields");
+//                    return;
+//                }
+//                isbn = Integer.parseInt(tempisbn);
+//                price = Integer.parseInt(tempPrice);
+//                min = Integer.parseInt(tempMin);
+//                inStock = Integer.parseInt(tempStock);
+//                boolean result = Controller.tryAddBook(isbn, title, author, pub, year, price, cat, min, inStock);
+//
+//                if (result) {
+//                    addBookErrorLabel.setText("Book already exists");
+//                    return;
+//                }
+//                addBookErrorLabel.setText("Success! I think :/");
+//                return;
+//
+//            }
+//        });
+//        promoteBackButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "ManageActionsScreen");
+//                promoteLabel.setText("");
+//            }
+//        });
+//        promoteButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                String username = promoteNameField.getText();
+//                if (username.isEmpty()) {
+//                    promoteLabel.setText("Fill user name");
+//                    return;
+//                }
+//                boolean result = Controller.promoteUser(username);
+//                if (result) promoteLabel.setText("Success!");
+//                else promoteLabel.setText("Already promoted.");
+//            }
+//        });
+//
         resultSearchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -328,139 +328,139 @@ public class MainFrame extends JFrame {
                 searchErrorLabel.setText("");
             }
         });
-        managerLogOutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                logout();
-            }
-        });
-        customerLogoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                logout();
-            }
-        });
-        placeOrderBackButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "ManageActionsScreen");
-                placeOrderErrorLabel.setText("");
-            }
-        });
-        placeOrderButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String strisbn, strquantity;
-                strisbn = placeOrderISBNF.getText();
-                strquantity = placeOrderQuantityF.getText();
-                if (strisbn.isEmpty() || strquantity.isEmpty()) {
-                    placeOrderErrorLabel.setText("Fill all fields");
-                    return;
-                }
-                try {
-                    int isbn = Integer.parseInt(strisbn);
-                    int quantity = Integer.parseInt(strquantity);
-                    boolean result = Controller.tryPlaceOrder(isbn, quantity);
-                } catch (NumberFormatException exception) {
-                    placeOrderErrorLabel.setText("Invalid input. Make sure the quantity and ISBN are numbers");
-                    return;
-                }
-            }
-        });
-        goToOrderBookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "PlaceOrderScreen");
-            }
-        });
-        searchResultsTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                int selectedCol = searchResultsTable.getSelectedColumn();
-                if (selectedCol == 8) {
-                    goToUpdateBook(0);
-                } else if (selectedCol == 7) {
-
-                }
-            }
-        });
-        goToUpdateBookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                goToUpdateBook();
-            }
-        });
-        updateBookBackButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "ManageActionsScreen");
-            }
-        });
+//        managerLogOutButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                logout();
+//            }
+//        });
+//        customerLogoutButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                logout();
+//            }
+//        });
+//        placeOrderBackButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "ManageActionsScreen");
+//                placeOrderErrorLabel.setText("");
+//            }
+//        });
+//        placeOrderButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                String strisbn, strquantity;
+//                strisbn = placeOrderISBNF.getText();
+//                strquantity = placeOrderQuantityF.getText();
+//                if (strisbn.isEmpty() || strquantity.isEmpty()) {
+//                    placeOrderErrorLabel.setText("Fill all fields");
+//                    return;
+//                }
+//                try {
+//                    int isbn = Integer.parseInt(strisbn);
+//                    int quantity = Integer.parseInt(strquantity);
+//                    boolean result = Controller.tryPlaceOrder(isbn, quantity);
+//                } catch (NumberFormatException exception) {
+//                    placeOrderErrorLabel.setText("Invalid input. Make sure the quantity and ISBN are numbers");
+//                    return;
+//                }
+//            }
+//        });
+//        goToOrderBookButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "PlaceOrderScreen");
+//            }
+//        });
+//        searchResultsTable.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                super.mouseClicked(e);
+//                int selectedCol = searchResultsTable.getSelectedColumn();
+//                if (selectedCol == 8) {
+//                    goToUpdateBook(0);
+//                } else if (selectedCol == 7) {
+//
+//                }
+//            }
+//        });
+//        goToUpdateBookButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                goToUpdateBook();
+//            }
+//        });
+//        updateBookBackButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                ((CardLayout) manageDeck.getLayout()).show(manageDeck, "ManageActionsScreen");
+//            }
+//        });
     }
 
-    void goToUpdateBook() {
-        tabbedPane1.setSelectedComponent(manageDeck);
-        ((CardLayout) manageDeck.getLayout()).show(manageDeck, "UpdateBookScreen");
-    }
+//    void goToUpdateBook() {
+//        tabbedPane1.setSelectedComponent(manageDeck);
+//        ((CardLayout) manageDeck.getLayout()).show(manageDeck, "UpdateBookScreen");
+//    }
+//
+//    void goToUpdateBook(int isbn) {
+//        updateBookISBNF.setText(String.valueOf(isbn));
+//        goToUpdateBook();
+//    }
 
-    void goToUpdateBook(int isbn) {
-        updateBookISBNF.setText(String.valueOf(isbn));
-        goToUpdateBook();
-    }
-
-    void loginAs(String username, String password, String type) {
-        if (username.isEmpty() || password.isEmpty()) {
-            loginErrorLabel.setText("Invalid login Info");
-            return;
-        }
-        boolean result = Controller.tryLogin(username, password, type);
-        if (!result) {
-            loginErrorLabel.setText("Invalid login Info");
-            return;
-        }
-        loggedUser = type;
-        if (type.equals("Customer")) {
-            ((CardLayout) rootPanel.getLayout()).show(rootPanel, "CustomerScreen");
-        } else {
-            ((CardLayout) rootPanel.getLayout()).show(rootPanel, "ManagerScreen");
-        }
-    }
+//    void loginAs(String username, String password, String type) {
+//        if (username.isEmpty() || password.isEmpty()) {
+//            loginErrorLabel.setText("Invalid login Info");
+//            return;
+//        }
+//        boolean result = Controller.tryLogin(username, password, type);
+//        if (!result) {
+//            loginErrorLabel.setText("Invalid login Info");
+//            return;
+//        }
+//        loggedUser = type;
+//        if (type.equals("Customer")) {
+//            ((CardLayout) rootPanel.getLayout()).show(rootPanel, "CustomerScreen");
+//        } else {
+//            ((CardLayout) rootPanel.getLayout()).show(rootPanel, "ManagerScreen");
+//        }
+//    }
 
 
-    void logout() {
-        ((CardLayout) rootPanel.getLayout()).show(rootPanel, "LoginScreen");
-        loggedUser = null;
-    }
-
-    void signup() {
-        String fname, lname, username, pass, email, address, phone, userType;
-        fname = fnameF.getText();
-        lname = lnameF.getText();
-        username = usernameF.getText();
-        pass = String.valueOf(passwordField1.getPassword());
-        email = emailF.getText();
-        address = addressF.getText();
-        phone = phoneF.getText();
-        userType = (String) signupUserTypeBox.getSelectedItem();
-        String p1 = String.valueOf(passwordField1.getPassword());
-        String p2 = String.valueOf(passwordField2.getPassword());
-        if (!p1.equals(p2)) {
-            signupErrorLabel.setText("The two passwords aren't the same");
-            return;
-        }
-        if (fname.isEmpty() || lname.isEmpty() || username.isEmpty() ||
-                pass.isEmpty() || email.isEmpty() || address.isEmpty() || phone.isEmpty()) {
-            signupErrorLabel.setText("Please fill all the fields");
-            return;
-        }
-        boolean result = Controller.trySignup(username, pass, lname, fname, email, phone, address, userType);
-        if (!result) {
-            signupErrorLabel.setText("Invalid signup due to DB conflict");
-            return;
-        }
-        loginAs(username, pass, userType);
-    }
+//    void logout() {
+//        ((CardLayout) rootPanel.getLayout()).show(rootPanel, "LoginScreen");
+//        loggedUser = null;
+//    }
+//
+//    void signup() {
+//        String fname, lname, username, pass, email, address, phone, userType;
+//        fname = fnameF.getText();
+//        lname = lnameF.getText();
+//        username = usernameF.getText();
+//        pass = String.valueOf(passwordField1.getPassword());
+//        email = emailF.getText();
+//        address = addressF.getText();
+//        phone = phoneF.getText();
+//        userType = (String) signupUserTypeBox.getSelectedItem();
+//        String p1 = String.valueOf(passwordField1.getPassword());
+//        String p2 = String.valueOf(passwordField2.getPassword());
+//        if (!p1.equals(p2)) {
+//            signupErrorLabel.setText("The two passwords aren't the same");
+//            return;
+//        }
+//        if (fname.isEmpty() || lname.isEmpty() || username.isEmpty() ||
+//                pass.isEmpty() || email.isEmpty() || address.isEmpty() || phone.isEmpty()) {
+//            signupErrorLabel.setText("Please fill all the fields");
+//            return;
+//        }
+//        boolean result = Controller.trySignup(username, pass, lname, fname, email, phone, address, userType);
+//        if (!result) {
+//            signupErrorLabel.setText("Invalid signup due to DB conflict");
+//            return;
+//        }
+//        loginAs(username, pass, userType);
+//    }
 
 
     private void createUIComponents() {
