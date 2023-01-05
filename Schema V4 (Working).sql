@@ -80,11 +80,3 @@ CREATE TABLE BOOK_ORDER(
  foreign key (bookISBN) references BOOK(ISBN) on update cascade
  );
  
- 
- CREATE TABLE BORROWER(
-  Card_no int,
-  Name varchar(50),
-  Address varchar(100),
-  Phone char(9),
-  PRIMARY KEY(Card_no)
-);
