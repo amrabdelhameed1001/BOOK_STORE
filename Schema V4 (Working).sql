@@ -36,9 +36,11 @@ CREATE TABLE PUBLISHER(
   Title varchar(30),
   Author varchar(30),
   Publisher_name varchar(30),
-  Year CHAR(4),
+  publish_year CHAR(4),
   Selling_price float,
   Category varchar(20),
+  in_stock int,
+  threshold int,
   foreign key (Publisher_name) references PUBLISHER (Name) on update cascade on delete set null
   );
   
@@ -86,7 +88,7 @@ CREATE TABLE BOOK_ORDER(
 DELIMITER //
 create procedure Add_new_books (in isbn INTEGER, in title varchar(30),in Author varchar(30),
   in Publisher_name varchar(30),
-  in Publication_Year date,
+  in Publication_Year char(4),
   in Selling_price float,
   in Category varchar(20), in instock int,in threshold int )
 begin
@@ -97,8 +99,6 @@ begin
  end
  //
 DELIMITER ;
-insert into publisher values ("aly","aff","012");
-call Add_new_books(12345,"good","ali","aly","2020-1-1",120.5,"Science",4,3);
 
 
 -- 2- modify existing book
@@ -146,7 +146,7 @@ DELIMITER //
 CREATE TRIGGER  confirm_orders  before delete ON BOOK_ORDER
 FOR EACH ROW
 BEGIN
-update book set in_stock = in_stock + old.quantity where isbn = old.Book_id;
+update book set in_stock = in_stock + old.bookQuantity where isbn = old.bookISBN;
 END;
 //
 DELIMITER ;
@@ -164,7 +164,6 @@ begin
                       //
                       DELIMITER ;
 
-call search_a_book(123,"good");
 
 delimiter //
 create procedure Search_by_category(in thecategory varchar(30))
@@ -174,7 +173,6 @@ begin
                       //
                       DELIMITER ;
 
-call search_by_category("geography");
 
 delimiter //
 create procedure Search_by_author(in author varchar(30))
@@ -184,7 +182,6 @@ begin
                       //
                       DELIMITER ;
 
-call search_by_author("ali");
 
 delimiter //
 create procedure Search_by_publisher(in publisher varchar(30))
@@ -194,4 +191,3 @@ begin
                       //
                       DELIMITER ;
 
-call search_by_publisher("aly");

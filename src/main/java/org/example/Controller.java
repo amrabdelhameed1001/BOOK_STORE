@@ -589,11 +589,150 @@ public class Controller {
     }
 
     public static Book[] search(Integer isbn, String title, String author, String pub, String cat)
-    {//Should return an array of Book objects that meet the search criterea.
-        //Any of the arguments can be null meaning they aren't part of the search.
-        //At least one of the arguments will not be null.
-        //Should return an array of Book objects. If no books meet the search criteria then return an empty array;
-        return new Book[0];
+    {
+        Book bookArr[] = {};    //result array
+        Book obj = null;
+        int i;
+        String QUERY = null;
+
+        if(isbn != null) {
+            i = 0;
+            QUERY = "select ISBN,Title,Selling_price from BOOK_STORE where ISBN=" + isbn + ";";
+            System.out.println(QUERY);
+
+            try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                Statement stmt = conn.createStatement();
+            ) {
+                String sql = "USE BOOK_STORE";
+                stmt.executeUpdate(sql);
+                ResultSet rs = stmt.executeQuery(QUERY);
+                while (rs.next()){
+                    int ISBN = rs.getInt("bookISBN");
+                    String Title = rs.getString("Title");
+                    float Price = rs.getFloat("Selling_price");
+                    obj.isbn = ISBN;
+                    obj.title = Title;
+                    obj.price = Price;
+                    bookArr[i] = obj;
+                    i++;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if(title!=null){
+            i = 0;
+            if(QUERY!=null)
+                QUERY = "select ISBN,Title,Selling_price from \"" + QUERY + "\"where Title=\"" + title + "\";";
+            else
+                QUERY = "select ISBN,Title,Selling_price from BOOK_STORE where Title=\"" + title + "\";";
+            System.out.println(QUERY);
+
+            try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                Statement stmt = conn.createStatement();
+            ) {
+                String sql = "USE BOOK_STORE";
+                stmt.executeUpdate(sql);
+                ResultSet rs = stmt.executeQuery(QUERY);
+                while (rs.next()){
+                    int ISBN = rs.getInt("bookISBN");
+                    String Title = rs.getString("Title");
+                    float Price = rs.getFloat("Selling_price");
+                    obj.isbn = ISBN;
+                    obj.title = Title;
+                    obj.price = Price;
+                    bookArr[i] = obj;
+                    i++;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if(author!=null){
+            i = 0;
+            if(QUERY!=null)
+                QUERY = "select ISBN,Title,Selling_price from \"" + QUERY + "\"where Author=\"" + author + "\";";
+            else
+                QUERY = "select ISBN,Title,Selling_price from BOOK_STORE where Author=\"" + author + "\";";
+            System.out.println(QUERY);
+
+            try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                Statement stmt = conn.createStatement();
+            ) {
+                String sql = "USE BOOK_STORE";
+                stmt.executeUpdate(sql);
+                ResultSet rs = stmt.executeQuery(QUERY);
+                while (rs.next()){
+                    int ISBN = rs.getInt("bookISBN");
+                    String Title = rs.getString("Title");
+                    float Price = rs.getFloat("Selling_price");
+                    obj.isbn = ISBN;
+                    obj.title = Title;
+                    obj.price = Price;
+                    bookArr[i] = obj;
+                    i++;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if(pub!=null){
+            i = 0;
+            if(QUERY!=null)
+                QUERY = "select ISBN,Title,Selling_price from\"" + QUERY + "\"where Publisher_name=\"" + pub + "\";";
+            else
+                QUERY = "select ISBN,Title,Selling_price from BOOK_STORE where Publisher_name=\"" + pub + "\";";
+            System.out.println(QUERY);
+
+            try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                Statement stmt = conn.createStatement();
+            ) {
+                String sql = "USE BOOK_STORE";
+                stmt.executeUpdate(sql);
+                ResultSet rs = stmt.executeQuery(QUERY);
+                while (rs.next()){
+                    int ISBN = rs.getInt("bookISBN");
+                    String Title = rs.getString("Title");
+                    float Price = rs.getFloat("Selling_price");
+                    obj.isbn = ISBN;
+                    obj.title = Title;
+                    obj.price = Price;
+                    bookArr[i] = obj;
+                    i++;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if(cat!=null){
+            i = 0;
+            if(QUERY!=null)
+                QUERY = "select ISBN,Title,Selling_price from \"" + QUERY + "\"where Category=\"" + cat + "\";";
+            else
+                QUERY = "select ISBN,Title,Selling_price from BOOK_STORE where Category=\"" + cat + "\";";
+            System.out.println(QUERY);
+
+            try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                Statement stmt = conn.createStatement();
+            ) {
+                String sql = "USE BOOK_STORE";
+                stmt.executeUpdate(sql);
+                ResultSet rs = stmt.executeQuery(QUERY);
+                while (rs.next()){
+                    int ISBN = rs.getInt("bookISBN");
+                    String Title = rs.getString("Title");
+                    float Price = rs.getFloat("Selling_price");
+                    obj.isbn = ISBN;
+                    obj.title = Title;
+                    obj.price = Price;
+                    bookArr[i] = obj;
+                    i++;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return bookArr;
     }
 
 
