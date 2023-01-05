@@ -590,14 +590,14 @@ public class Controller {
 
     public static Book[] search(Integer isbn, String title, String author, String pub, String cat)
     {
-        Book bookArr[] = {};    //result array
-        Book obj = null;
+        Book bookArr[];    //result array
+        Book obj = new Book();
         int i;
         String QUERY = null;
 
         if(isbn != null) {
             i = 0;
-            QUERY = "select ISBN,Title,Selling_price from BOOK_STORE where ISBN=" + isbn + ";";
+            QUERY = "select ISBN,Title,Selling_price from Book where ISBN=" + isbn + ";";
             System.out.println(QUERY);
 
             try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -607,12 +607,12 @@ public class Controller {
                 stmt.executeUpdate(sql);
                 ResultSet rs = stmt.executeQuery(QUERY);
                 while (rs.next()){
-                    int ISBN = rs.getInt("bookISBN");
+                    int ISBN = rs.getInt("ISBN");
                     String Title = rs.getString("Title");
                     float Price = rs.getFloat("Selling_price");
                     obj.isbn = ISBN;
                     obj.title = Title;
-                    obj.price = Price;
+                    obj.price = Math.round(Price);
                     bookArr[i] = obj;
                     i++;
                 }
@@ -640,7 +640,7 @@ public class Controller {
                     float Price = rs.getFloat("Selling_price");
                     obj.isbn = ISBN;
                     obj.title = Title;
-                    obj.price = Price;
+                    obj.price = Math.round(Price);
                     bookArr[i] = obj;
                     i++;
                 }
@@ -668,7 +668,7 @@ public class Controller {
                     float Price = rs.getFloat("Selling_price");
                     obj.isbn = ISBN;
                     obj.title = Title;
-                    obj.price = Price;
+                    obj.price = Math.round(Price);
                     bookArr[i] = obj;
                     i++;
                 }
@@ -696,7 +696,7 @@ public class Controller {
                     float Price = rs.getFloat("Selling_price");
                     obj.isbn = ISBN;
                     obj.title = Title;
-                    obj.price = Price;
+                    obj.price = Math.round(Price);
                     bookArr[i] = obj;
                     i++;
                 }
@@ -724,7 +724,7 @@ public class Controller {
                     float Price = rs.getFloat("Selling_price");
                     obj.isbn = ISBN;
                     obj.title = Title;
-                    obj.price = Price;
+                    obj.price = Math.round(Price);
                     bookArr[i] = obj;
                     i++;
                 }

@@ -3,6 +3,11 @@ package org.example;
 public class Book {
     public String title, author, publisher, year, cat;
     public int price, isbn;
+
+    public Book()
+    {
+
+    }
     public Book(int isbn, String title, String author, String pub, String year, String cat, int price)
     {
         this.isbn = isbn;
