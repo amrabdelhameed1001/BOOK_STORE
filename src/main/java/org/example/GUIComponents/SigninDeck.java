@@ -114,14 +114,9 @@ public class SigninDeck {
         }
         User user = new User();
         user.setUserName(username);
-        user.setFirstName(fnameF.getText());
-        user.setLastName(lnameF.getText());
         user.setPassword(password);
-        user.setEmail(emailF.getText());
-        user.setAddress(addressF.getText());
-        user.setPhone(phoneF.getText());
         user.setType(type);
-        ((AppFrame) deck.getTopLevelAncestor()).completeLogin(user);
+        ((AppFrame) deck.getTopLevelAncestor()).completeLogin(user.getUserName(), user.getPassword(), user.getType());
     }
 
 

@@ -16,10 +16,11 @@ public class AppFrame extends JFrame
         add(currentScreen);
     }
 
-    public void completeLogin(User user)
+    public void completeLogin(String username, String pass, String type)
     {
         remove(currentScreen);
-        currentScreen = new MainScreen(user).getRoot();
+        User loggedUser = Controller.getUserInfo(username, pass, type);
+        currentScreen = new MainScreen(loggedUser).getRoot();
         add(currentScreen);
         revalidate();
         repaint();

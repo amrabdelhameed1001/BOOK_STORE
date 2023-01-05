@@ -46,9 +46,8 @@ public class SearchDeck {
                     new Controller().tryAddBookToCart(isbn, 1);
                     mainScreen.updateCart();
                 } else if (selectedCol == 8) {//Update book
-                    String strisbn = (String) resultTable.getValueAt(resultTable.getSelectedRow(), 0);
-                    int isbn = Integer.valueOf(strisbn);
-                    mainScreen.goToUpdateBook(0);
+                    int isbn = (Integer) resultTable.getValueAt(resultTable.getSelectedRow(), 0);
+                    mainScreen.goToUpdateBook(isbn);
                 }
             }
         });
@@ -77,7 +76,7 @@ public class SearchDeck {
                 author = author.isEmpty() ? null : author;
                 pub = pub.isEmpty() ? null : pub;
                 cat = cat.isEmpty() ? null : cat;
-                searchResults = Controller.search(isbn, title, author, pub, cat);
+                searchResults = new Controller().search(isbn, title, author, pub, cat);
                 ((CardLayout) deck.getLayout()).show(deck, "ResultScreen");
                 searchErrorLabel.setText("");
                 tableDTM.setRowCount(0);

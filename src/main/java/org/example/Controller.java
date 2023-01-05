@@ -588,7 +588,7 @@ public class Controller {
         }
     }
 
-    public static Book[] search(Integer isbn, String title, String author, String pub, String cat)
+    public Book[] search(Integer isbn, String title, String author, String pub, String cat)
     {
         Book bookArr[] = null;    //result array
         Book obj = new Book();
@@ -597,7 +597,7 @@ public class Controller {
 
         if(isbn != null) {
             i = 0;
-            QUERY = "select ISBN,Title,Selling_price, count(*) from book where ISBN=" + isbn + ";";
+            QUERY = "select ISBN,Title,Selling_price, count(*) from book where ISBN=" + isbn ;
             System.out.println(QUERY);
 
             try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -605,7 +605,7 @@ public class Controller {
             ) {
                 String sql = "USE BOOK_STORE";
                 stmt.executeUpdate(sql);
-                ResultSet rs = stmt.executeQuery(QUERY);
+                ResultSet rs = stmt.executeQuery(QUERY + ";");
                 while (rs.next()){
                     int ISBN = rs.getInt("ISBN");
                     String Title = rs.getString("Title");
@@ -625,7 +625,7 @@ public class Controller {
         if(title!=null){
             i = 0;
             if(QUERY!=null)
-                QUERY = "select ISBN,Title,Selling_price,count(*) from \"" + QUERY + "\"where Title=\"" + title + "\";";
+                QUERY = "select ISBN,Title,Selling_price,count(*) from (" + QUERY + ")where Title=\"" + title + "\";";
             else
                 QUERY = "select ISBN,Title,Selling_price,count(*) from book where Title=\"" + title + "\";";
             System.out.println(QUERY);
@@ -655,7 +655,7 @@ public class Controller {
         if(author!=null){
             i = 0;
             if(QUERY!=null)
-                QUERY = "select ISBN,Title,Selling_price,count(*) from \"" + QUERY + "\"where Author=\"" + author + "\";";
+                QUERY = "select ISBN,Title,Selling_price,count(*) from (" + QUERY + ")where Author=\"" + author + "\";";
             else
                 QUERY = "select ISBN,Title,Selling_price,count(*) from book where Author=\"" + author + "\";";
             System.out.println(QUERY);
@@ -685,7 +685,7 @@ public class Controller {
         if(pub!=null){
             i = 0;
             if(QUERY!=null)
-                QUERY = "select ISBN,Title,Selling_price,count(*) from\"" + QUERY + "\"where Publisher_name=\"" + pub + "\";";
+                QUERY = "select ISBN,Title,Selling_price,count(*) from(" + QUERY + ")where Publisher_name=\"" + pub + "\";";
             else
                 QUERY = "select ISBN,Title,Selling_price,count(*) from book where Publisher_name=\"" + pub + "\";";
             System.out.println(QUERY);
@@ -715,7 +715,7 @@ public class Controller {
         if(cat!=null){
             i = 0;
             if(QUERY!=null)
-                QUERY = "select ISBN,Title,Selling_price,count(*) from \"" + QUERY + "\"where Category=\"" + cat + "\";";
+                QUERY = "select ISBN,Title,Selling_price,count(*) from (" + QUERY + ")where Category=\"" + cat + "\";";
             else
                 QUERY = "select ISBN,Title,Selling_price,count(*) from book where Category=\"" + cat + "\";";
             System.out.println(QUERY);
@@ -775,6 +775,7 @@ public class Controller {
 
     public static boolean promoteUser(String username)
     {
+        
         final String QUERY3 = "update user_info set type = \"Manager\" where username=\""+username+"\";";
         System.out.println(QUERY3);
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
