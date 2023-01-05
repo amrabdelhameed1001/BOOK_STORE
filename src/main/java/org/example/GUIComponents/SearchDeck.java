@@ -46,7 +46,8 @@ public class SearchDeck {
                     new Controller().tryAddBookToCart(isbn, 1);
                     mainScreen.updateCart();
                 } else if (selectedCol == 8) {//Update book
-                    int isbn = (Integer) resultTable.getValueAt(resultTable.getSelectedRow(), selectedCol);
+                    String strisbn = (String) resultTable.getValueAt(resultTable.getSelectedRow(), 0);
+                    int isbn = Integer.valueOf(strisbn);
                     mainScreen.goToUpdateBook(0);
                 }
             }

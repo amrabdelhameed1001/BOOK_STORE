@@ -173,6 +173,7 @@ public class ManageDeck {
                     if (result) {
                         placeOrderErrorLabel.setText("Success!");
                     }
+                    else placeOrderErrorLabel.setText("Failed.");
                 } catch (NumberFormatException exception) {
                     placeOrderErrorLabel.setText("Invalid input.");
                     return;

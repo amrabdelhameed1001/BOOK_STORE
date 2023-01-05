@@ -590,14 +590,14 @@ public class Controller {
 
     public static Book[] search(Integer isbn, String title, String author, String pub, String cat)
     {
-        Book bookArr[];    //result array
+        Book bookArr[] = null;    //result array
         Book obj = new Book();
         int i;
         String QUERY = null;
 
         if(isbn != null) {
             i = 0;
-            QUERY = "select ISBN,Title,Selling_price from Book where ISBN=" + isbn + ";";
+            QUERY = "select ISBN,Title,Selling_price, count(*) from book where ISBN=" + isbn + ";";
             System.out.println(QUERY);
 
             try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -610,9 +610,11 @@ public class Controller {
                     int ISBN = rs.getInt("ISBN");
                     String Title = rs.getString("Title");
                     float Price = rs.getFloat("Selling_price");
+                    int size = rs.getInt(4);
                     obj.isbn = ISBN;
                     obj.title = Title;
                     obj.price = Math.round(Price);
+                    bookArr = new Book[size];
                     bookArr[i] = obj;
                     i++;
                 }
@@ -623,9 +625,9 @@ public class Controller {
         if(title!=null){
             i = 0;
             if(QUERY!=null)
-                QUERY = "select ISBN,Title,Selling_price from \"" + QUERY + "\"where Title=\"" + title + "\";";
+                QUERY = "select ISBN,Title,Selling_price,count(*) from \"" + QUERY + "\"where Title=\"" + title + "\";";
             else
-                QUERY = "select ISBN,Title,Selling_price from BOOK_STORE where Title=\"" + title + "\";";
+                QUERY = "select ISBN,Title,Selling_price,count(*) from book where Title=\"" + title + "\";";
             System.out.println(QUERY);
 
             try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -635,12 +637,14 @@ public class Controller {
                 stmt.executeUpdate(sql);
                 ResultSet rs = stmt.executeQuery(QUERY);
                 while (rs.next()){
-                    int ISBN = rs.getInt("bookISBN");
+                    int ISBN = rs.getInt("isbn");
                     String Title = rs.getString("Title");
                     float Price = rs.getFloat("Selling_price");
+                    int size = rs.getInt(4);
                     obj.isbn = ISBN;
                     obj.title = Title;
                     obj.price = Math.round(Price);
+                    bookArr = new Book[size];
                     bookArr[i] = obj;
                     i++;
                 }
@@ -651,9 +655,9 @@ public class Controller {
         if(author!=null){
             i = 0;
             if(QUERY!=null)
-                QUERY = "select ISBN,Title,Selling_price from \"" + QUERY + "\"where Author=\"" + author + "\";";
+                QUERY = "select ISBN,Title,Selling_price,count(*) from \"" + QUERY + "\"where Author=\"" + author + "\";";
             else
-                QUERY = "select ISBN,Title,Selling_price from BOOK_STORE where Author=\"" + author + "\";";
+                QUERY = "select ISBN,Title,Selling_price,count(*) from book where Author=\"" + author + "\";";
             System.out.println(QUERY);
 
             try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -663,12 +667,14 @@ public class Controller {
                 stmt.executeUpdate(sql);
                 ResultSet rs = stmt.executeQuery(QUERY);
                 while (rs.next()){
-                    int ISBN = rs.getInt("bookISBN");
+                    int ISBN = rs.getInt("isbn");
                     String Title = rs.getString("Title");
                     float Price = rs.getFloat("Selling_price");
+                    int size = rs.getInt(4);
                     obj.isbn = ISBN;
                     obj.title = Title;
                     obj.price = Math.round(Price);
+                    bookArr = new Book[size];
                     bookArr[i] = obj;
                     i++;
                 }
@@ -679,9 +685,9 @@ public class Controller {
         if(pub!=null){
             i = 0;
             if(QUERY!=null)
-                QUERY = "select ISBN,Title,Selling_price from\"" + QUERY + "\"where Publisher_name=\"" + pub + "\";";
+                QUERY = "select ISBN,Title,Selling_price,count(*) from\"" + QUERY + "\"where Publisher_name=\"" + pub + "\";";
             else
-                QUERY = "select ISBN,Title,Selling_price from BOOK_STORE where Publisher_name=\"" + pub + "\";";
+                QUERY = "select ISBN,Title,Selling_price,count(*) from book where Publisher_name=\"" + pub + "\";";
             System.out.println(QUERY);
 
             try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -691,12 +697,14 @@ public class Controller {
                 stmt.executeUpdate(sql);
                 ResultSet rs = stmt.executeQuery(QUERY);
                 while (rs.next()){
-                    int ISBN = rs.getInt("bookISBN");
+                    int ISBN = rs.getInt("isbn");
                     String Title = rs.getString("Title");
                     float Price = rs.getFloat("Selling_price");
+                    int size = rs.getInt(4);
                     obj.isbn = ISBN;
                     obj.title = Title;
                     obj.price = Math.round(Price);
+                    bookArr = new Book[size];
                     bookArr[i] = obj;
                     i++;
                 }
@@ -707,9 +715,9 @@ public class Controller {
         if(cat!=null){
             i = 0;
             if(QUERY!=null)
-                QUERY = "select ISBN,Title,Selling_price from \"" + QUERY + "\"where Category=\"" + cat + "\";";
+                QUERY = "select ISBN,Title,Selling_price,count(*) from \"" + QUERY + "\"where Category=\"" + cat + "\";";
             else
-                QUERY = "select ISBN,Title,Selling_price from BOOK_STORE where Category=\"" + cat + "\";";
+                QUERY = "select ISBN,Title,Selling_price,count(*) from book where Category=\"" + cat + "\";";
             System.out.println(QUERY);
 
             try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -719,12 +727,14 @@ public class Controller {
                 stmt.executeUpdate(sql);
                 ResultSet rs = stmt.executeQuery(QUERY);
                 while (rs.next()){
-                    int ISBN = rs.getInt("bookISBN");
+                    int ISBN = rs.getInt("ISBN");
                     String Title = rs.getString("Title");
                     float Price = rs.getFloat("Selling_price");
+                    int size = rs.getInt(4);
                     obj.isbn = ISBN;
                     obj.title = Title;
                     obj.price = Math.round(Price);
+                    bookArr = new Book[size];
                     bookArr[i] = obj;
                     i++;
                 }
@@ -783,7 +793,7 @@ public class Controller {
     public boolean placeOrder(int ISBN){
         int in_stock=0;
         int threshold=0;
-        boolean flag= false;
+        boolean flag= true;
         final String QUERY1 = "select in_stock, threshold from book where isbn="+ISBN+";";
         System.out.println(QUERY1);
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
