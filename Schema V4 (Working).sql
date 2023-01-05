@@ -64,7 +64,7 @@ CREATE TABLE AUTHORS(
 
 CREATE TABLE BOOK_ORDER(
   Order_id INTEGER,
-  customerID INTEGER,
+--   customerID INTEGER,
   Book_id int,
   quantity int,
   primary key(Order_id),
